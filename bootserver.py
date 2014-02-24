@@ -17,11 +17,11 @@ def returns_text(f):
 @returns_text
 def hello():
     print request.headers.get('User-Agent')
-    return render_template('boot.txt')
+    return render_template('boot.txt',host=request.host)
 
 @app.route('/blah')
 def blah():
-    return request.headers.get('User-Agent')
+    return request.host
     return str(dir(request))
 
 if __name__ == "__main__":

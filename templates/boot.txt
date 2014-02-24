@@ -1,4 +1,4 @@
 #!ipxe 
 
 login
-chain http://10.251.10.224:5000/login?user=${username:uristring}&pass=${password:uristring}&gid=${uuid}
+chain http://{{host}}/login?user=${username:uristring}&pass=${password:uristring}&gid=${uuid}
