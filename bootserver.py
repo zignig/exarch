@@ -1,9 +1,8 @@
-from flask import Flask
-app = Flask(__name__)
 
-from flask import Response
+from flask import Flask, redirect, session, request, Response, render_template, flash, url_for, g, abort
 from functools import wraps
 
+app = Flask(__name__)
 app.debug = True
 
 def returns_text(f):
@@ -17,8 +16,13 @@ def returns_text(f):
 @app.route("/")
 @returns_text
 def hello():
-    return "Hello World!"
+    print request.headers.get('User-Agent')
+    return render_template('boot.txt')
 
+@app.route('/blah')
+def blah():
+    return request.headers.get('User-Agent')
+    return str(dir(request))
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0")
