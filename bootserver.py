@@ -35,7 +35,7 @@ def valid_key(key):
 def hello():
     user_agent = request.headers.get('User-Agent')
     if user_agent == "iPXE/1.0.0+ (d4c0)":  
-        return render_template('boot.txt',host=request.host)
+        return render_template('boot.txt',host=request.host_url)
     else:
         return 'web browser'
 
