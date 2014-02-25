@@ -1,0 +1,14 @@
+#!ipxe
+:top
+menu Available Servers
+{% for i  in machines %}
+item {{ i.name }} {{ i.description }} - {{ i.name }}
+{% endfor %}
+choose selected
+goto ${selected}
+
+{%- for i in machines %}
+:{{ i.name }}
+chain {{ host }}${uuid}/{{ i.name }}/${net0/mac}
+goto top
+{% endfor %}

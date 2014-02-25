@@ -15,7 +15,11 @@ def returns_text(f):
         return Response(r, content_type='text/plain')
     return decorated_function
 
-
+def valid_user(user,passwd):
+    u = User.query.filter(User.name == user).first()
+    
+    return u
+    
 @app.route("/")
 @returns_text
 def hello():
@@ -30,8 +34,10 @@ def hello():
 def login():
     if request.method == "GET":
         user = request.args.get("user")
-        print user
-    return render_template('boot.txt',host=request.host)
+        print valid_user(user,'')
+    machines = Machine.query.all()
+    return render_template('menu.txt',machines=machines,host=request.host_url)
+    
 @app.route('/blah')
 @returns_text
 def blah():

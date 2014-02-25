@@ -21,6 +21,8 @@ def init_db():
 class Machine(Base):
     __tablename__ = 'machines'
     id = Column(Integer, primary_key=True)
+    name = Column(String(50),unique=True)
+    description = Column(String(50),unique=True)
     
 class User(Base):
     __tablename__ = 'users'
