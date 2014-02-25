@@ -35,7 +35,7 @@ def valid_key(key):
 def hello():
     user_agent = request.headers.get('User-Agent')
     if user_agent == "iPXE/1.0.0+ (d4c0)":  
-        return render_template('boot.txt',host=request.host_url)
+        return render_template('boot.txt')
     else:
         return 'web browser'
 
@@ -50,22 +50,30 @@ def login():
             db_session.add(sess)
             db_session.commit()
             machines = Machine.query.all()
-            return render_template('menu.txt',machines=machines,key=sess.key,host=request.host_url)
+            return render_template('menu.txt',machines=machines,key=sess.key)
         else:
-            return render_template('boot.txt',host=request.host)
-
+            return render_template('boot.txt')
 
 @app.route("/boot/<key>/<mtype>")
 @returns_text
 def boot(key,mtype):
     print key,mtype
-    return '#!ipxe \nreboot'
+    #if valid_key(key):
+    #    return '#!ipxe \n\necho stuff $$ read test'
+    #else:
+    return render_template('boot.txt')
     
 @app.route('/blah')
 @returns_text
 def blah():
-    return str(User.query.all())
-    return str(dir(request))
+    #return str(User.query.all())
+    txt = ''
+    for i in dir(request):
+        try:
+            txt = txt + str(i) + ' : ' + str(request.__dict__[i])+'\r\n'
+        except:
+            txt = txt + 'fail on '+str(i)+'\r\n'
+    return txt
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

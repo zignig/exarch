@@ -1,5 +1,4 @@
 #!ipxe 
 
-echo This is a test
 login
-chain {{ host }}login?user=${username:uristring}&pass=${password:uristring}&gid=${uuid}
+chain {{ url_for('login') }}?user=${username:uristring}&pass=${password:uristring}&gid=${uuid}
