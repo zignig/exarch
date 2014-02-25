@@ -1,8 +1,9 @@
 #!ipxe
+
 :top
 menu Available Servers
 {% for i  in machines %}
-item {{ i.name }} {{ i.description }} - {{ i.name }}
+item {{ i.name }} {{ i.name }} - {{ i.description }}
 {% endfor %}
 choose selected
 goto ${selected}
