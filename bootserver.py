@@ -2,6 +2,9 @@
 from flask import Flask, redirect, session, request, Response, render_template, flash, url_for, g, abort
 from functools import wraps
 
+from model import *
+ 
+
 app = Flask(__name__)
 app.debug = True
 
@@ -16,12 +19,23 @@ def returns_text(f):
 @app.route("/")
 @returns_text
 def hello():
-    print request.headers.get('User-Agent')
-    return render_template('boot.txt',host=request.host)
+    user_agent = request.headers.get('User-Agent')
+    if user_agent == "iPXE/1.0.0+ (d4c0)":  
+        return render_template('boot.txt',host=request.host)
+    else:
+        return 'web browser'
 
+@app.route("/login")
+@returns_text
+def login():
+    if request.method == "GET":
+        user = request.args.get("user")
+        print user
+    return render_template('boot.txt',host=request.host)
 @app.route('/blah')
+@returns_text
 def blah():
-    return request.host
+    return str(User.query.all())
     return str(dir(request))
 
 if __name__ == "__main__":
