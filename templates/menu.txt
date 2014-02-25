@@ -10,6 +10,6 @@ goto ${selected}
 
 {%- for i in machines %}
 :{{ i.name }}
-chain {{ host }}${uuid}/{{ i.name }}/${net0/mac}
+chain {{ host }}boot/{{ key }}/{{ i.name }}
 goto top
 {% endfor %}

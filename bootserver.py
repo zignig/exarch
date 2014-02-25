@@ -16,10 +16,20 @@ def returns_text(f):
     return decorated_function
 
 def valid_user(user,passwd):
-    u = User.query.filter(User.name == user).first()
-    
-    return u
-    
+    u = User.query.filter(User.name == user).first()    
+    if u == None:
+        return False
+    else:
+        # check password 
+        return True
+
+def valid_key(key):
+    k = Session.query.filter(Session.key == key).first()
+    if k != None:
+        return True
+    else:
+        return False
+
 @app.route("/")
 @returns_text
 def hello():
@@ -34,9 +44,22 @@ def hello():
 def login():
     if request.method == "GET":
         user = request.args.get("user")
-        print valid_user(user,'')
-    machines = Machine.query.all()
-    return render_template('menu.txt',machines=machines,host=request.host_url)
+        password = request.args.get("password")
+        if valid_user(user,password):
+            sess = Session()
+            db_session.add(sess)
+            db_session.commit()
+            machines = Machine.query.all()
+            return render_template('menu.txt',machines=machines,key=sess.key,host=request.host_url)
+        else:
+            return render_template('boot.txt',host=request.host)
+
+
+@app.route("/boot/<key>/<mtype>")
+@returns_text
+def boot(key,mtype):
+    print key,mtype
+    return '#!ipxe \nreboot'
     
 @app.route('/blah')
 @returns_text
