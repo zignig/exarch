@@ -34,11 +34,15 @@ def valid_key(key):
 @returns_text
 def hello():
     user_agent = request.headers.get('User-Agent')
-    if user_agent == "iPXE/1.0.0+ (d4c0)":  
-        return render_template('boot.txt')
+    if user_agent.startswith("iPXE"):
+        return render_template('boot.txt') 
     else:
         return 'web browser'
-
+    
+@app.route("/test")
+def test():
+    return render_template('boot.txt')
+    
 @app.route("/login")
 @returns_text
 def login():
