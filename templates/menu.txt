@@ -10,6 +10,6 @@ goto ${selected}
 
 {%- for i in machines %}
 :{{ i.name }}
-chain {{ url_for('boot',key=key,mtype=i.name) }}
+chain {{ url_for('boot',_external=True,key=key,mtype=i.name) }}
 goto top
 {% endfor %}
