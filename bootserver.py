@@ -31,13 +31,12 @@ def valid_key(key):
         return False
 
 @app.route("/")
-@returns_text
 def hello():
     user_agent = request.headers.get('User-Agent')
     if user_agent.startswith("iPXE"):
         return render_template('boot.txt') 
     else:
-        return 'web browser'
+        return render_template('index.html')
     
 @app.route("/test")
 def test():
