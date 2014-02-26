@@ -1,0 +1,8 @@
+master:
+  'master server'
+slave:
+  'slave server'
+studio:
+  'studio server box'
+render:
+  'render node'
