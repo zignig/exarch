@@ -44,7 +44,7 @@ class Session(Base):
     id = Column(Integer, primary_key=True)
     time = Column(DateTime)
     key = Column(String(16),unique=True)
-    status = Column(Enum('init','boot','install','configure','finish'))
+    status = Column(Enum('init','boot','install','configure','finish',name='status'))
     
     def __init__(self):
         self.time = datetime.datetime.now()
