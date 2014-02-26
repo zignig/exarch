@@ -1,0 +1,15 @@
+<h1> Choose from the following servers</h1>
+<table class="pure-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    {% for i in machines %}
+    <tr class="hilight">
+    <td> {{ i.name }} </td>
+    <td> {{ i.description }} </td>
+    </tr>
+    {% endfor %}
+</table>
