@@ -9,8 +9,9 @@
 <link rel="stylesheet" href="{{ url_for('static',filename="css/bootserver.css") }}">
 </head>
 <body>
-<div class="pure-g-r content" id="layout">
-    <div class="pure-u-1" id="main">
+<div class="main">
+	{% block header %}{% endblock %}
+    <div class="content">
 		{% block body %}content here{% endblock %}
     </div>
 </div>

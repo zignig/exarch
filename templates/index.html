@@ -8,8 +8,22 @@
     </div>
     <div class="hero-cta">
         <p>
-            <a class="button-cta pure-button" href="/customize/">Get Started</a>
+            <a class="button-cta pure-button" href="">Get Boot Iso</a>
         </p>
     </div>
 </div>
+<table class="pure-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    {% for i in machines %}
+    <tr class="hilight">
+    <td> {{ i.name }} </td>
+    <td> {{ i.description }} </td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

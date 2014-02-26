@@ -2,6 +2,27 @@
     text-align: center;
 }
 
+
+.content {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+
+
+.pure-table {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.hilight:hover { 
+    background: #aaa;
+}
+
 .hero-site {
     font-size: 400%;
     font-weight: 100;
