@@ -56,6 +56,7 @@ class Machine(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50),unique=True)
     description = Column(String(50),unique=True)
+    platform = Column(String(50))
     
     def __init__(self,name,description):
         self.name = name

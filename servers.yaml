@@ -1,8 +1,12 @@
 master:
-  'master server'
+  'salt master server for deploying services'
 slave:
-  'slave server'
+  'slave server secondary services'
 studio:
   'studio server box'
 render:
   'render node'
+fileserver:
+  'replicated file server for hosting'
+desktop:
+  'Ubuntu desktop machine'

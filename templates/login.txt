@@ -1,0 +1,4 @@
+#!ipxe 
+
+login
+chain {{ url_for('login',_external=True) }}?user=${username:uristring}&pass=${password:uristring}&gid=${uuid}

@@ -3,7 +3,7 @@ from flask import Flask, redirect, session, request, Response, render_template, 
 from functools import wraps
 
 from model import *
- 
+import config
 
 app = Flask(__name__)
 app.debug = True
@@ -39,9 +39,10 @@ def hello():
         machines = Machine.query.all()
         return render_template('index.html',machines=machines)
     
-@app.route("/test")
+@app.route("/ipxe")
+@returns_text
 def ipxe():
-    return render_template('boot.txt')
+    return render_template('login.txt')
     
 @app.route("/login")
 @returns_text
@@ -56,17 +57,32 @@ def login():
             machines = Machine.query.all()
             return render_template('menu.txt',machines=machines,key=sess.key)
         else:
-            return render_template('boot.txt')
+            return render_template('login.txt')
 
 @app.route("/boot/<key>/<mtype>")
 @returns_text
 def boot(key,mtype):
     print key,mtype
-    #if valid_key(key):
-    #    return '#!ipxe \n\necho stuff $$ read test'
-    #else:
-    return render_template('boot.txt')
+    if valid_key(key):
+        return render_template('boot.txt',key=key)
+    else:
+        return render_template('login.txt')      
+
+@app.route("/kernel/<key>")
+def kernel(key):
+    print key
+    return 
     
+@app.route("/initrd/<key>")
+def initrd(key):
+    print key
+    return 
+
+@app.route("/preseed/<key>")
+def preseed(key):
+    print key
+    return 
+
 @app.route('/blah')
 @returns_text
 def blah():
