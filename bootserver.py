@@ -68,6 +68,10 @@ def boot(key,mtype):
     else:
         return render_template('login.txt')      
 
+@app.route("/iso")
+def iso():
+    return
+    
 @app.route("/kernel/<key>")
 def kernel(key):
     print key
