@@ -1,5 +1,6 @@
 
 from flask import Flask, redirect, session, request, Response, render_template, flash, url_for, g, abort
+from flask import send_file
 from functools import wraps
 
 from model import *
@@ -70,7 +71,8 @@ def boot(key,mtype):
 
 @app.route("/iso")
 def iso():
-    return
+    # hand back the boot iso 
+    return send_file('static/images/boot.iso',as_attachment=True,attachment_filename="boot.iso",mimetype='application/iso-image')
     
 @app.route("/kernel/<key>")
 def kernel(key):
