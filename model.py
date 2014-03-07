@@ -79,3 +79,7 @@ class User(Base):
 
     def __repr__(self):
         return '<User %r>' % (self.name)
+        
+if __name__ == "__main__":
+    print('create database tables')
+    init_db()
