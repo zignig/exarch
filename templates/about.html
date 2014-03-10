@@ -5,6 +5,22 @@
     <div class="hero-titles">
         <h1 class="hero-site">About</h1>
     </div>
-add about blah here 
+<div class="copy">
+<h2>iPXE base bootserver</h2>
+<p>
+This application is designed to ease the installation of debian and related operating systems
+by automating the bulk of the interaction in the installation process.
+</p><p>
+It leverages the excellent PXE boot environment <a href="http://ipxe.org">iPXE</a> using a 
+<a href="http://flask.pocoo.org/">Flask</a> based python application to provide ipxe menus, debian-installer scripts and post install scripts.
+</p><p>
+Depending on system config and your choice of image it also uses <a href="http://saltstack.org">Salt stack</a>
+to provide configuration management and orchestration of systems.
+</p><p> 
+The basic premise of the boot server is to provide a simple and reliable way to deploy and configure
+linux servers with a minimum of mess and fuss. The aim is to be able to deploy, redeploy and build
+complex linux systems in hours rather than days.
+</p>
+</div>
 </div>
 {% endblock %}
