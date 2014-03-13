@@ -1,4 +1,5 @@
 #!ipxe 
 
+#shell
 login
-chain {{ url_for('login',_external=True) }}?user=${username:uristring}&pass=${password:uristring}&gid=${uuid}
+chain {{ url_for('login',_external=True) }}?user=${username:uristring}&pass=${password:uristring}&processor=${buildarch}

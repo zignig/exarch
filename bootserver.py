@@ -24,12 +24,6 @@ def valid_user(user,passwd):
         # check password 
         return True
 
-def valid_key(key):
-    k = Session.query.filter(Session.key == key).first()
-    if k != None:
-        return True
-    else:
-        return False
 
 @app.route("/")
 def hello():
@@ -51,8 +45,10 @@ def login():
     if request.method == "GET":
         user = request.args.get("user")
         password = request.args.get("password")
+        processor = request.args.get("processor")
         if valid_user(user,password):
             sess = Session()
+            sess.processor = processor 
             db_session.add(sess)
             db_session.commit()
             machines = Machine.query.all()
@@ -64,7 +60,7 @@ def login():
 @returns_text
 def boot(key,mtype):
     print key,mtype
-    if valid_key(key):
+    if Session.valid_key(key):
         return render_template('boot.txt',key=key)
     else:
         return render_template('login.txt')      
@@ -84,19 +80,46 @@ def iso():
     
 @app.route("/kernel/<key>")
 def kernel(key):
-    print key
-    return 
-    
+    if Session.valid_key(key):
+        k = Session.get_session(key)
+        return send_file(
+            'static/images/'+k.processor+'/linux',
+            as_attachment=True,
+            attachment_filename='linux'
+            )
+
 @app.route("/initrd/<key>")
 def initrd(key):
-    print key
-    return 
-
+    if Session.valid_key(key):
+        k = Session.get_session(key)
+        return send_file(
+            'static/images/'+k.processor+'/initrd.gz',
+            as_attachment=True,
+            attachment_filename='initrd.gz'
+            )
+    
 @app.route("/preseed/<key>")
+@returns_text
 def preseed(key):
-    print key
-    return 
+    if Session.valid_key(key):
+        k = Session.get_session(key)
+        proxy = 'http://192.168.1.92:3142/'
+        return render_template('debian.prsd.txt',deb_proxy=proxy,key=key,password=k.processor) 
 
+@app.route("/postinstall/<key>")
+@returns_text
+def postinstall(key):
+    if Session.valid_key(key):
+        k = Session.get_session(key)
+        return render_template('postinstall.txt',key=key)
+
+@app.route("/firstboot/<key>")
+@returns_text
+def firstboot(key):
+    if Session.valid_key(key):
+        k = Session.get_session(key)
+        return render_template('firstboot.txt')
+        
 @app.route('/blah')
 @returns_text
 def blah():

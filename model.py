@@ -6,8 +6,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime , Enum
 
 import string,random,datetime,yaml
-
-engine = create_engine('sqlite:////tmp/test.db', convert_unicode=True)
+import config
+engine = create_engine(config.sqlurl, convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
@@ -44,12 +44,32 @@ class Session(Base):
     id = Column(Integer, primary_key=True)
     time = Column(DateTime)
     key = Column(String(16),unique=True)
+    macaddress = Column(String(50),unique=True)
     status = Column(Enum('init','boot','install','configure','finish',name='status'))
-    
+    processor = Column(String(20))
+
     def __init__(self):
         self.time = datetime.datetime.now()
         self.key = rand_string()
         self.status = 'init'
+    
+    @staticmethod
+    def valid_key(val):
+        k = Session.query.filter(Session.key == val).first()
+        if k != None:
+            return True
+        else:
+            return False
+            
+    @staticmethod
+    def get_session(val):
+        k = Session.query.filter(Session.key == val).first()
+        return k
+            
+class Images(Base):
+    __tablename__ = 'images'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50),unique=True)
         
 class Machine(Base):
     __tablename__ = 'machines'
@@ -66,6 +86,8 @@ class Machine(Base):
         txt = ' '+self.name+' : '+self.description
         return txt
     
+
+            
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
