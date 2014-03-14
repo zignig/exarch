@@ -46,6 +46,7 @@ class Session(Base):
     key = Column(String(16),unique=True)
     macaddress = Column(String(50),unique=True)
     status = Column(Enum('init','boot','install','configure','finish',name='status'))
+    name = Column(String(50))
     processor = Column(String(20))
 
     def __init__(self):

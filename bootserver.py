@@ -61,6 +61,11 @@ def login():
 def boot(key,mtype):
     print key,mtype
     if Session.valid_key(key):
+        # add the machine type into the session
+        s = Session.get_session(key)
+        s.name = mtype
+        db_session.add(s)
+        db_session.commit()        
         return render_template('boot.txt',key=key)
     else:
         return render_template('login.txt')      
@@ -103,8 +108,9 @@ def initrd(key):
 def preseed(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
+        # TODO put proxy into config
         proxy = 'http://192.168.1.92:3142/'
-        return render_template('debian.prsd.txt',deb_proxy=proxy,key=key,password=k.processor) 
+        return render_template('debian.prsd.txt',name=k.name,deb_proxy=proxy,key=key,password=k.processor) 
 
 @app.route("/postinstall/<key>")
 @returns_text
