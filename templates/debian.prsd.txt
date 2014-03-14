@@ -5,7 +5,7 @@ d-i finish-install/reboot_in_progress note
 d-i grub-installer/only_debian boolean true
 d-i keyboard-configuration/xkb-keymap select us 
 #d-i netcfg/get_domain string {{ domain }}
-d-i netcfg/hostname string {{ name }}
+d-i netcfg/get_hostname string {{ name }}
 {%- if deb_proxy %}
 d-i mirror/http/proxy string {{ deb_proxy }} 
 {% endif -%}

@@ -124,7 +124,13 @@ def postinstall(key):
 def firstboot(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
-        return render_template('firstboot.txt')
+        return render_template('firstboot.txt',key=key)
+
+@app.route("/final/<key>")
+@returns_text
+def final(key):
+    if Session.valid_key(key):
+        return 'finished'
         
 @app.route('/blah')
 @returns_text
