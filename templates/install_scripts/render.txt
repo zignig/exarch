@@ -1,0 +1,4 @@
+# include other scripts
+{% include 'install_scripts/slave.txt' %}
+
+#TODO - add render spooler and processor ( substrate systems )
