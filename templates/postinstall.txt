@@ -1,15 +1,15 @@
 #!/bin/sh
 
 # get the firstboot file
-/usr/bin/curl -o /root/firstboot {{ url_for('firstboot',_external=True,key=key) }}
+/usr/bin/curl -o /root/firstboot {{ url_for('firstboot',_external=True,key=key.key) }}
 
 chmod +x /root/firstboot
 
 cat > /etc/init.d/firstboot <<EOF
 ### BEGIN INIT INFO
 # Provides:        firstboot
-# Required-Start:  $networking
-# Required-Stop:   $networking
+# Required-Start:  $remote_fs $syslog
+# Required-Stop:   $remote_fs $syslog
 # Default-Start:   2 3 4 5
 # Default-Stop:    0 1 6
 # Short-Description: A script that runs once

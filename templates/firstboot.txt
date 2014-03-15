@@ -1,11 +1,24 @@
 #!/bin/sh
 
+# sleep for a while for the dns and networking to catch up 
+sleep 10
+
+# set hostname 
+cat > /etc/hostname <<EOF
+{{ key.name }}
+EOF
+
 # do installer stuff here 
+{% if script %}
+{{ script }}
+{% endif %}
+
+# clean up and reboot
 
 update-rc.d -f firstboot remove
 chmod a-x /root/firstboot
 
 # notify the bootserver that the install has finished 
-curl {{ url_for('final',_external=True,key=key) }}
+curl {{ url_for('final',_external=True,key=key.key) }}
 # reboot the server
 /sbin/reboot

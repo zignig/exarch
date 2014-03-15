@@ -1,8 +1,11 @@
 # install salt stack
 
-# TODO add salt stack repository
+# salt stack repo
+cat > /etc/apt/sources.list.d/salt.list  <<EOF
+deb http://debian.saltstack.com/debian wheezy-saltstack main
+EOF
 
 # gpg key for salt stack repo
 wget -q -O- "http://debian.saltstack.com/debian-salt-team-joehealy.gpg.key" | apt-key add -
 
-# end salt stack
+apt-get update 

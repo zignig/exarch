@@ -59,7 +59,6 @@ def login():
 @app.route("/boot/<key>/<mtype>")
 @returns_text
 def boot(key,mtype):
-    print key,mtype
     if Session.valid_key(key):
         # add the machine type into the session
         s = Session.get_session(key)
@@ -109,7 +108,10 @@ def preseed(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
         # TODO put proxy into config
-        proxy = 'http://192.168.1.92:3142/'
+        if config.has_proxy:
+            proxy = config.proxy
+        else:
+            proxy = None
         return render_template('debian.prsd.txt',name=k.name,deb_proxy=proxy,key=key,password=k.processor) 
 
 @app.route("/postinstall/<key>")
@@ -117,15 +119,22 @@ def preseed(key):
 def postinstall(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
-        return render_template('postinstall.txt',key=key)
+        return render_template('postinstall.txt',key=k)
 
 @app.route("/firstboot/<key>")
 @returns_text
 def firstboot(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
-        return render_template('firstboot.txt',key=key)
-
+        # TODO add script layout to machines
+        scripts = ['saltstack',str(k.name)]
+        rendered_script = ''
+        for i in scripts:
+            rendered_script += '# --------------------- start '+ i +' --------------------- # \n'
+            rendered_script += render_template('install_scripts/'+i+'.txt',details=config,key=k)+'\n'
+            rendered_script += '# --------------------- end '+ i +' --------------------- #\n\n'
+        return render_template('firstboot.txt',script=rendered_script,key=k)
+            
 @app.route("/final/<key>")
 @returns_text
 def final(key):
