@@ -1,2 +1,2 @@
 # include other scripts
-{% include 'install_scripts/slave.txt' %}
+{% include 'install_scripts/saltslave.txt' %}

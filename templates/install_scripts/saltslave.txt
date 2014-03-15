@@ -1,0 +1,7 @@
+apt-get install -y salt-minion
+
+# generate the basic minion config
+cat > /etc/salt/minion <<EOF
+master: {{ details.salt_master }}
+id: {{ key.name }}
+EOF
