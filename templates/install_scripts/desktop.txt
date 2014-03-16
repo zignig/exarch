@@ -1,2 +1,4 @@
 # include other scripts
 {% include 'install_scripts/saltslave.txt' %}
+
+tasksel install desktop

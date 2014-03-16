@@ -139,6 +139,7 @@ def firstboot(key):
 @returns_text
 def final(key):
     if Session.valid_key(key):
+        # TODO update session to say completed.
         return 'finished'
         
 @app.route('/blah')
