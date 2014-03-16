@@ -42,7 +42,9 @@ class Session(Base):
     " session storage for machine installs"
     __tablename__ = 'session'
     id = Column(Integer, primary_key=True)
-    time = Column(DateTime)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
+    active = Column(Integer,default=0)
     key = Column(String(16),unique=True)
     macaddress = Column(String(50),unique=True)
     status = Column(Enum('init','boot','install','configure','finish',name='status'))
@@ -50,13 +52,14 @@ class Session(Base):
     processor = Column(String(20))
 
     def __init__(self):
-        self.time = datetime.datetime.now()
+        self.start_time = datetime.datetime.now()
+        self.active = 1
         self.key = rand_string()
         self.status = 'init'
     
     @staticmethod
     def valid_key(val):
-        k = Session.query.filter(Session.key == val).first()
+        k = Session.query.filter(Session.key == val,Session.active == 1).first()
         if k != None:
             return True
         else:

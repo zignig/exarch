@@ -1,14 +1,32 @@
-
+# boot server 
 from flask import Flask, redirect, session, request, Response, render_template, flash, url_for, g, abort
 from flask import send_file
 from functools import wraps
+from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
+
+from wtforms import Form, RadioField, BooleanField, TextField, FloatField, PasswordField, validators, IntegerField, SelectField
+from wtforms.validators import NumberRange, InputRequired
 
 from model import *
 import config
 
+login_manager = LoginManager()
+login_manager.login_view = "auth_user"
+
 app = Flask(__name__)
 app.debug = True
+login_manager.init_app(app)
+app.secret_key = "asdf;lkasdflksgal88"
 
+class LoginForm(Form):
+    username = IntegerField('username')
+    password = IntegerField('password')
+
+@login_manager.user_loader
+def load_user(userid):
+    u = User.query.filter(User.name == user).first()
+    return u
+    
 def returns_text(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -24,7 +42,16 @@ def valid_user(user,passwd):
         # check password 
         return True
 
-
+@app.route('/auth', methods=["GET", "POST"])
+def auth_user():
+    form = LoginForm()
+    if request.method == 'POST' and form.validate():
+        user = User(form.username.data,form.password.data)
+        login_user(user)
+        flash("Logged in successfully.")
+        return redirect(request.args.get("next") or url_for("index"))
+    return render_template('web_login.html')
+    
 @app.route("/")
 def hello():
     user_agent = request.headers.get('User-Agent')
@@ -74,8 +101,14 @@ def about():
     return render_template('about.html')
 
 @app.route('/instructions')
+#@login_required
 def instructions():
     return render_template('instructions.html')
+
+@app.route('/admin')
+@login_required
+def admin():
+    return render_template('admin.html')
 
 @app.route("/iso")
 def iso():
