@@ -6,22 +6,30 @@ from flask.ext.login import LoginManager, login_user, logout_user, current_user,
 
 from wtforms import Form, RadioField, BooleanField, TextField, FloatField, PasswordField, validators, IntegerField, SelectField
 
-
 from model import *
 import config
 
 login_manager = LoginManager()
 login_manager.login_view = "auth_user"
 
+global app
 app = Flask(__name__)
 app.debug = True
 login_manager.init_app(app)
 app.secret_key = "asdf;lkasdflksgal88"
 
+import admin 
+
 class LoginForm(Form):
     username = TextField('username')
     password = TextField('password')
-
+    
+class AdminForm(Form):
+    proxy = TextField('apt_proxy')
+    login = BooleanField('login')
+    salt_stack = BooleanField('saltstack')
+    salt_master = TextField('saltmaster')
+    
 @login_manager.user_loader
 def load_user(userid):
     uid = int(userid)
@@ -119,10 +127,11 @@ def about():
 def instructions():
     return render_template('instructions.html')
 
-@app.route('/admin')
+@app.route('/admin',methods=["GET", "POST"])
 @login_required
 def admin():
-    return render_template('admin.html')
+    form = AdminForm(request.form)
+    return render_template('admin.html',form=form)
 
 @app.route("/logout")
 @login_required

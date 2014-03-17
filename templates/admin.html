@@ -6,5 +6,16 @@
         <h1 class="hero-site">Administration</h1>
     </div>
 Admin Form and links to machines and settings.
+{% from "_formhelper.html" import render_field %}
+{% if form %}
+<form method="post" class="pure-form " method=post>
+    {% for f in form %}
+    <div class="pure-control-group">
+    {{ render_field(f) }}
+    </div>
+    {% endfor %}
+    <p><input type=submit value=Update class="pure-button pure-button-primary">
+</form>
+{% endif %}
 </div>
 {% endblock %}
