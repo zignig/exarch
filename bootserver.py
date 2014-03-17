@@ -57,6 +57,7 @@ def auth_user():
     if request.method == 'POST' and form.validate():
         user = check_user(form.username.data,form.password.data)
         if user == None:
+            flash("Username or Password incorrect")
             return render_template('web_login.html')
         else:
             login_user(user)
@@ -115,7 +116,6 @@ def about():
     return render_template('about.html')
 
 @app.route('/instructions')
-#@login_required
 def instructions():
     return render_template('instructions.html')
 
@@ -132,6 +132,7 @@ def logout():
     return redirect(url_for("hello"))
 
 @app.route("/iso")
+@login_required
 def iso():
     # hand back the boot iso 
     return send_file('static/images/boot.iso',as_attachment=True,attachment_filename="boot.iso",mimetype='application/iso-image')

@@ -107,8 +107,12 @@ class User(Base):
     def is_anonymous(self):
         return False
     
+    def aut(self,password):
+        if self.password == password:
+            return True
+        
     def is_authenticated(self):
-        return True 
+        return True
         
     def get_id(self):
         return self.id
