@@ -97,12 +97,29 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=True)
     email = Column(String(120), unique=True)
+    active = Column(Integer,default=1)
     password = Column(String(120))
     
     def __init__(self, name=None, email=None):
         self.name = name
         self.email = email
-
+    
+    def is_anonymous(self):
+        return False
+    
+    def is_authenticated(self):
+        return True 
+        
+    def get_id(self):
+        return self.id
+        
+    def is_active(self):
+        return True
+        if self.active == 1:
+            return True
+        else:
+            return False 
+            
     def __repr__(self):
         return '<User %r>' % (self.name)
         

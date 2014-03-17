@@ -18,6 +18,9 @@
         <li><a href="{{ url_for('about') }}">About</a></li>
         <li><a href="{{ url_for('instructions') }}">Instructions</a></li>
         <li><a href="{{ url_for('admin') }}">Admin</a></li>
+{% if current_user.is_authenticated() %}
+logout button
+{% endif %}
     </ul>
 </div>
 		{% block body %}content here{% endblock %}

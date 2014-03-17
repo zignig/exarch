@@ -5,7 +5,7 @@ from functools import wraps
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 
 from wtforms import Form, RadioField, BooleanField, TextField, FloatField, PasswordField, validators, IntegerField, SelectField
-from wtforms.validators import NumberRange, InputRequired
+
 
 from model import *
 import config
@@ -19,12 +19,13 @@ login_manager.init_app(app)
 app.secret_key = "asdf;lkasdflksgal88"
 
 class LoginForm(Form):
-    username = IntegerField('username')
-    password = IntegerField('password')
+    username = TextField('username')
+    password = TextField('password')
 
 @login_manager.user_loader
 def load_user(userid):
-    u = User.query.filter(User.name == user).first()
+    uid = int(userid)
+    u = User.query.filter(User.id == uid).first()
     return u
     
 def returns_text(f):
@@ -34,6 +35,14 @@ def returns_text(f):
         return Response(r, content_type='text/plain')
     return decorated_function
 
+def check_user(user,passwd):
+    u = User.query.filter(User.name == user).first()
+    if u == None:
+        return None
+    else:
+        # check password 
+        return u
+        
 def valid_user(user,passwd):
     u = User.query.filter(User.name == user).first()    
     if u == None:
@@ -44,12 +53,16 @@ def valid_user(user,passwd):
 
 @app.route('/auth', methods=["GET", "POST"])
 def auth_user():
-    form = LoginForm()
+    form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
-        user = User(form.username.data,form.password.data)
-        login_user(user)
-        flash("Logged in successfully.")
-        return redirect(request.args.get("next") or url_for("index"))
+        user = check_user(form.username.data,form.password.data)
+        if user == None:
+            return 'fail'
+        else:
+            login_user(user)
+            flash("Logged in successfully.")
+            print "login worked"
+            return redirect(request.args.get("next") or url_for("index"))
     return render_template('web_login.html')
     
 @app.route("/")
@@ -82,6 +95,7 @@ def login():
             return render_template('menu.txt',machines=machines,key=sess.key)
         else:
             return render_template('login.txt')
+            
 
 @app.route("/boot/<key>/<mtype>")
 @returns_text
@@ -109,6 +123,12 @@ def instructions():
 @login_required
 def admin():
     return render_template('admin.html')
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("hello"))
 
 @app.route("/iso")
 def iso():
