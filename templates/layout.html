@@ -12,6 +12,7 @@
 <div class="main">
 	{% block header %}{% endblock %}
     <div class="content">
+
 <div class="pure-menu pure-menu-open pure-menu-horizontal">
     <ul>
         <li><a href="{{ url_for('hello') }}">Home</a></li>
@@ -29,11 +30,12 @@
     <br>
     <div class="content">
     {% for message in messages %}
-      <button class="button-info pure-button">{{ message }}</button>
+      <aside >{{ message }}</aside>
     {% endfor %}
     </div>
   {% endif %}
 {% endwith %}
+
 </div>
 </div>
 </body>

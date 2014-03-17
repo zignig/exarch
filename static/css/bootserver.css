@@ -8,6 +8,13 @@
     color: white;
 }
 
+aside {
+background: #1f8dd6;
+padding: 0.3em 1em;
+border-radius: 3px;
+color: #fff;
+}
+
 .content {
     position: relative;
     width: 80%;
