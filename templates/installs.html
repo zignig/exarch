@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}Installed machines{% endblock %}
+{% block body %}
+<div class="hero">
+    <div class="hero-titles">
+        <h1 class="hero-site">Installs</h1> 
+    </div>
+    <div class="hero-cta">
+<table class="pure-table">
+    <thead>
+        <tr>
+        {% set k = sess[0].__dict__.keys() %}
+        {% for i in k %}
+        {% if not i.startswith('_') %}
+            <th>{{ i }}</th>
+        {% endif %}
+        {% endfor %}
+        </tr>
+    </thead>
+    {% for i in sess %}
+    <tr class="hilight">
+        {% for j in k %}
+        {% if not j.startswith('_') %}            
+            <td>{{ i[j] }}</td>
+        {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+    </div>
+</div>
+{% endblock %}
