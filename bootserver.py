@@ -57,7 +57,7 @@ def auth_user():
     if request.method == 'POST' and form.validate():
         user = check_user(form.username.data,form.password.data)
         if user == None:
-            return 'fail'
+            return render_template('web_login.html')
         else:
             login_user(user)
             flash("Logged in successfully.")
@@ -128,6 +128,7 @@ def admin():
 @login_required
 def logout():
     logout_user()
+    flash("Logged out")
     return redirect(url_for("hello"))
 
 @app.route("/iso")

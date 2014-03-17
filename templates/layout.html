@@ -19,12 +19,22 @@
         <li><a href="{{ url_for('instructions') }}">Instructions</a></li>
         <li><a href="{{ url_for('admin') }}">Admin</a></li>
         {% if current_user.is_authenticated() %}
-        <li><a href="{{ url_for('logout') }}" >Logout</a></li>
+        <li class="pure-menu-selected"><a href="{{ url_for('logout') }}" >Logout</a></li>
         {% endif %}
     </ul>
 </div>
-		{% block body %}content here{% endblock %}
+{% block body %}content here{% endblock %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <br>
+    <div class="content">
+    {% for message in messages %}
+      <button class="button-info pure-button">{{ message }}</button>
+    {% endfor %}
     </div>
+  {% endif %}
+{% endwith %}
+</div>
 </div>
 </body>
 </html>

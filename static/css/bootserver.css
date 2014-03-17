@@ -3,6 +3,10 @@
     text-align: center;
 }
 
+.button-info {
+    background: rgb(255,0,0);
+    color: white;
+}
 
 .content {
     position: relative;
