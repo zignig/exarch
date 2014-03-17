@@ -3,8 +3,8 @@
 {% block body %}
 <div class="hero">
     <div class="hero-titles">
-{#        <h1 class="hero-site">Bootserver</h1> #}
-{#        <h2 class="hero-tagline">An iPXE server for deploying linux boxes</h2> #}
+        <h1 class="hero-site">Bootserver</h1> 
+        <h2 class="hero-tagline">An iPXE server for deploying linux boxes</h2> 
     </div>
     <div class="hero-cta">
         <p>
@@ -12,18 +12,4 @@
         </p>
     </div>
 </div>
-<table class="pure-table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    {% for i in machines %}
-    <tr class="hilight">
-    <td> {{ i.name }} </td>
-    <td> {{ i.description }} </td>
-    </tr>
-    {% endfor %}
-</table>
 {% endblock %}
