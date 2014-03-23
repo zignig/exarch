@@ -1,5 +1,6 @@
 #!ipxe 
 
 #shell
-login
-chain {{ url_for('login',_external=True) }}?user=${username:uristring}&pass=${password:uristring}&processor=${buildarch}
+{# login #}
+chain {{ url_for('hello',_external=True)}}mac/${buildarch}/${net0/mac}
+{# chain {{ url_for('login',_external=True) }}?user=${username:uristring}&pass=${password:uristring}&processor=${buildarch} #}

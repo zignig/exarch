@@ -57,6 +57,12 @@ class Session(Base):
         self.key = rand_string()
         self.status = 'init'
     
+    def close(self):
+        self.active = 0
+        self.end_time = datetime.datetime.now()
+        db_session.add(self)
+        db_session.commit()
+        
     @staticmethod
     def valid_key(val):
         k = Session.query.filter(Session.key == val,Session.active == 1).first()
@@ -65,6 +71,17 @@ class Session(Base):
         else:
             return False
             
+    @staticmethod
+    def valid_mac(mac):
+        # check some basic mac address features
+        if len(string.split(mac,':')) != 6:
+            return False
+        
+        k = Session.query.filter(Session.macaddress == mac,Session.active == 1).one()
+        if k != None:
+            return True
+        else:
+            return False
     @staticmethod
     def get_session(val):
         k = Session.query.filter(Session.key == val).first()

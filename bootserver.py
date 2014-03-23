@@ -112,6 +112,19 @@ def login():
             return render_template('login.txt')
             
 
+@app.route("/mac/<processor>/<mac_address>")
+@returns_text
+def mac(processor='',mac_address=''):
+    if request.method == "GET":
+        sess = Session()
+        sess.macaddress = mac_address
+        sess.processor = processor
+        db_session.add(sess)
+        db_session.commit()
+        machines = Machine.query.all()
+        return render_template('menu.txt',machines=machines,key=sess.key)
+    return ''
+    
 @app.route("/boot/<key>/<mtype>")
 @returns_text
 def boot(key,mtype):
@@ -210,6 +223,8 @@ def firstboot(key):
 def final(key):
     if Session.valid_key(key):
         # TODO update session to say completed.
+        fin = Session.get_session(key)
+        fin.close() 
         return 'finished'
         
 @app.route('/blah')

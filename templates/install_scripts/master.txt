@@ -2,6 +2,8 @@
 apt-get install -y salt-master salt-minion
 
 # TODO grab salt master repo
+cd /srv/
+git clone {{ details.salt_repo }} .
 
 cat > /etc/salt/minion <<EOF
 master: localhost
