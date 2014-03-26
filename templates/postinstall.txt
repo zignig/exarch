@@ -15,7 +15,7 @@ cat > /etc/init.d/firstboot <<EOF
 # Short-Description: A script that runs once
 # Description: A script that runs once
 ### END INIT INFO
-cd /root ; /usr/bin/nohup sh -x /root/firstboot > /dev/console &
+cd /root ; /usr/bin/nohup /root/firstboot | tee /root/install.log &
 EOF
 
 chmod +x /etc/init.d/firstboot

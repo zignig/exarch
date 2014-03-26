@@ -1,3 +1,5 @@
+exarch:
+  'Master of Masters'
 master:
   'salt master server for deploying services'
 slave:
@@ -10,3 +12,4 @@ fileserver:
   'replicated file server for hosting'
 desktop:
   'Ubuntu desktop machine'
+

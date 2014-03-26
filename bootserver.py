@@ -18,7 +18,6 @@ app.debug = True
 login_manager.init_app(app)
 app.secret_key = "asdf;lkasdflksgal88"
 
-import admin 
 
 class LoginForm(Form):
     username = TextField('username')
@@ -240,4 +239,5 @@ def blah():
     return txt
 
 if __name__ == "__main__":
+    init_db()
     app.run(host="0.0.0.0")

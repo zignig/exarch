@@ -21,7 +21,7 @@ def rand_string(length=16):
 def default_fill():
     # fill in some default data on database creation
     print 'fill in default data'
-    f = open('servers.yaml')
+    f = open('/opt/bootserver/servers.yaml')
     servers = yaml.load(f)
     f.close()
     for i in servers:
