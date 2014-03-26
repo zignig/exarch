@@ -46,7 +46,7 @@ class Session(Base):
     end_time = Column(DateTime)
     active = Column(Integer,default=0)
     key = Column(String(16),unique=True)
-    macaddress = Column(String(50),unique=True)
+    macaddress = Column(String(50))#,unique=True)
     status = Column(Enum('init','boot','install','configure','finish',name='status'))
     name = Column(String(50))
     processor = Column(String(20))
