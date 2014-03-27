@@ -21,9 +21,11 @@ d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-partitioning/confirm_write_new_label boolean true
 d-i passwd/make-user boolean false
-#d-i passwd/root-password-crypted password {{ password }} 
+#d-i passwd/root-password-crypted password crypty-bit 
+{%- if details.password %}
 d-i passwd/root-password password r00tme
 d-i passwd/root-password-again password r00tme
+{% endif %}
 d-i pkgsel/include string curl git 
 d-i pkgsel/upgrade select safe-upgrade
 d-i popularity-contest/participate boolean false

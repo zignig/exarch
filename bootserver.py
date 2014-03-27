@@ -190,7 +190,7 @@ def preseed(key):
             proxy = config.proxy
         else:
             proxy = None
-        return render_template('debian.prsd.txt',name=k.name,deb_proxy=proxy,key=key,password=k.processor) 
+        return render_template('debian.prsd.txt',details=config,name=k.name,deb_proxy=proxy,key=key,password=k.processor) 
 
 @app.route("/postinstall/<key>")
 @returns_text
@@ -209,7 +209,10 @@ def firstboot(key):
         rendered_script = ''
         for i in scripts:
             rendered_script += '# --------------------- start '+ i +' --------------------- # \n'
-            rendered_script += render_template('install_scripts/'+i+'.txt',details=config,key=k)+'\n'
+            try:
+                rendered_script += render_template('install_scripts/'+i+'.txt',details=config,key=k)+'\n'
+            except:
+                rendered_script += '\n# '+ i + ' has no template, please write and install\n\n'
             rendered_script += '# --------------------- end '+ i +' --------------------- #\n\n'
         return render_template('firstboot.txt',script=rendered_script,key=k)
             

@@ -1,0 +1,2 @@
+{% include 'install_scripts/master.txt' %}
+# TODO add in sydication master config
