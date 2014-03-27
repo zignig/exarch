@@ -7,12 +7,14 @@
     </div>
 <hr>
 <div class="chunky">
+<h1>Huh?</h1>
+{% include("about.html") %}
 <h1>What you need</h1>
 <legend>A computer is probably a good start. But and empty computer is better.</legend>
 <ol>
 <li>The internet</li>
 <li>Access to boot an actual computer or the ability to make virtual one and have console access to it.</li>
-<li>An few hours (depending on the speed of your net) or about 10 minutes once the cache has been filled.</li>
+<li>A few hours (depending on the speed of your net) or about 10 minutes once the cache has been filled.</li>
 <li>Some reading on technology used in this bootserver:
     <ol>
         <li><a target="_blank" href="http://debian.org">debian</a> : awesome free operating system</li>
@@ -56,9 +58,11 @@
 <li>Grabs the selected menu item and inserts it into database along with a random key , this key is used for the rest of the install</li>
 <li>Downloads a kernel and an initrd and boots into the debian installer</li>
 <li>Grabs a <a target="_blank" href="https://wiki.debian.org/DebianInstaller/Preseed">preseed</a> file and uses it to install debian</li>
-<li>Inserts a service and a script that will run first boot and then disable itself</li>
-<li>Finishes install, reboots and runs the first boot script, then disables the boot service</li>
-<li>Reboots again</li> 
+<li>Inserts a service and a script that will run first boot.</li>
+<li>Finishes install, reboots and runs the first boot script, then disables the first boot service</li>
+<li>Reboots again.</li> 
 </ol>
+<h1>This is the bit that it gets awesome</h1>
+
 </div>
 {% endblock %}

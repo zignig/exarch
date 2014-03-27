@@ -137,10 +137,6 @@ def boot(key,mtype):
     else:
         return render_template('login.txt')      
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
 @app.route('/instructions')
 def instructions():
     return render_template('instructions.html')
