@@ -83,7 +83,7 @@ def hello():
         return render_template('index.html',machines=machines)
 
 @app.route("/installs")
-@login_required
+#@login_required
 def installs():
     sess = Session.query.all()
     return render_template('installs.html',sess=sess)

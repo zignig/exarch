@@ -5,6 +5,60 @@
     <div class="hero-titles">
         <h1 class="hero-site">Instructions</h1>
     </div>
-Instructions for use
+<hr>
+<div class="chunky">
+<h1>What you need</h1>
+<legend>A computer is probably a good start. But and empty computer is better.</legend>
+<ol>
+<li>The internet</li>
+<li>Access to boot an actual computer or the ability to make virtual one and have console access to it.</li>
+<li>An few hours (depending on the speed of your net) or about 10 minutes once the cache has been filled.</li>
+<li>Some reading on technology used in this bootserver:
+    <ol>
+        <li><a target="_blank" href="http://debian.org">debian</a> : awesome free operating system</li>
+        <li><a target="_blank" href="http://ipxe.org">iPXE</a>: about as close to bare metal as you can get</li>
+        <li><a target="_blank" href="http://flask.pocoo.org/">Flask</a>: groovy web application platform</li>
+        <li><a target="_blank" href="http://saltstack.org/">SaltStack</a>: orchestration and configuration on a small or mega scale</li>
+    </ol>
+</ol>
+<h1>How to start</h1>
+    <div class="hero-cta">
+        <p>
+            <a class="button-cta button-info pure-button" href="{{ url_for('iso') }}">Get Boot Iso</a>
+            <br><small>Login Required</small>
+            <br><small>Talk to your system administrator if pain persists.</small>
+        </p>
+    </div>
+
+<ol>
+<li>Burn it onto a disc and boot a real or virtual machine from it</li>
+<li>Some computer boot stuff should scroll past and get you to a menu that looks like this</li>
+<li>
+    <div class="ipxe">
+        <div class="menutop">Available Servers</div>
+        <ul>
+            <li class="ipxe">master - master salt server</li>
+            <li class="ipxe selected">minion - bound minion to this salt master</li>
+            <li class="ipxe">widget - a server that makes widgets</li>
+        </ul>
+    </div>
+</li>
+<li>Use the up and down keys to select the server you would like to build.</li>
+<li>If you select master , it will install a debian system , salt master and this bootserver application.</li>
+<li>An then you can boot off that ...</li>
+<li>Before you start, know that  <strong class="selected" >this will format the drives of the machine and install a new OS over the top</strong> ( you have been warned )</li>
+<li>To start press ENTER.</li>
+<li>Watch your new salt master deploy, should take an hour or so</li>
+</ol>
+<h1>What's going on</h1>
+<ol>
+<li>iPXE is a really low level micro operating system that provides network and http access to get a web page from this bootserver</li>
+<li>Grabs the selected menu item and inserts it into database along with a random key , this key is used for the rest of the install</li>
+<li>Downloads a kernel and an initrd and boots into the debian installer</li>
+<li>Grabs a <a target="_blank" href="https://wiki.debian.org/DebianInstaller/Preseed">preseed</a> file and uses it to install debian</li>
+<li>Inserts a service and a script that will run first boot and then disable itself</li>
+<li>Finishes install, reboots and runs the first boot script, then disables the boot service</li>
+<li>Reboots again</li> 
+</ol>
 </div>
 {% endblock %}
