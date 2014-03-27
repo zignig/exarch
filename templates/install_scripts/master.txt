@@ -19,5 +19,5 @@ salt-key -ya master
 sleep 5
 salt master test.ping
 echo Starting master install
-salt master state.highstate
+salt-call -l debug state.highstate
 echo Finished master install
