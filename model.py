@@ -15,7 +15,7 @@ Base = declarative_base()
 Base.query = db_session.query_property()
 
 def rand_string(length=16):
-    a = ''.join(random.choice(string.hexdigits) for i in range(length))
+    a = ''.join(random.choice(string.ascii_letters) for i in range(length))
     return a 
 
 def default_fill():
@@ -37,7 +37,9 @@ def init_db():
     Base.metadata.create_all(bind=engine)
     if Machine.query.count() == 0:
         default_fill()
-    
+    if User.query.count() == 0:
+        u = User('','')
+        
 class Session(Base):
     " session storage for machine installs"
     __tablename__ = 'session'

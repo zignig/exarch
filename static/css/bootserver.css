@@ -9,6 +9,14 @@
     font-size: 150%;
 }
 
+.dim {
+    color: rgb(50,200,50);
+}
+
+.pending {
+    color: rgb(255,100,0);
+}
+
 aside {
 background: #1f8dd6;
 padding: 0.3em 1em;
@@ -68,6 +76,7 @@ color: #fff;
 
 .hilight:hover { 
     background: #aaa;
+    color: white;
 }
 
 .hero-site {

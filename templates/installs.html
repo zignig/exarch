@@ -7,7 +7,7 @@
     </div>
     <div class="hero-cta">
 {% if sess %}
-{% set blah = ['id','processor','name','start_time','end_time','status','macaddress','active'] %}
+{% set blah = ['id','macaddress','processor','name','start_time','end_time','status'] %}
 <table class="pure-table">
     <thead>
         <tr>
@@ -17,7 +17,7 @@
         </tr>
     </thead>
     {% for i in sess %}
-    <tr class="hilight">
+    <tr class="hilight {% if i['active'] == 0%}dim{% else %}pending{% endif %}">
         {% for j in blah %}
             <td>{{ i[j] }}</td>
         {% endfor %}
