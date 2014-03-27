@@ -6,27 +6,27 @@
         <h1 class="hero-site">Installs</h1> 
     </div>
     <div class="hero-cta">
+{% if sess %}
+{% set blah = ['id','processor','name','start_time','end_time','status','macaddress','active'] %}
 <table class="pure-table">
     <thead>
         <tr>
-        {% set k = sess[0].__dict__.keys() %}
-        {% for i in k %}
-        {% if not i.startswith('_') %}
+        {% for i in blah %}
             <th>{{ i }}</th>
-        {% endif %}
         {% endfor %}
         </tr>
     </thead>
     {% for i in sess %}
     <tr class="hilight">
-        {% for j in k %}
-        {% if not j.startswith('_') %}            
+        {% for j in blah %}
             <td>{{ i[j] }}</td>
-        {% endif %}
         {% endfor %}
     </tr>
     {% endfor %}
 </table>
     </div>
 </div>
+{% else %}
+<h1> No Installed Machines </h1>
+{% endif %}
 {% endblock %}
