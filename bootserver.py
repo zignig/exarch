@@ -227,7 +227,7 @@ def final(key):
         fin = Session.get_session(key)
         fin.close() 
 	# add machine into local redis database for pending
-	r.sadd('machines',key.name)
+	r.sadd('machines',fin.name)
         return 'finished'
         
 @app.route('/blah')
