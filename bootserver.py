@@ -7,7 +7,10 @@ from flask.ext.login import LoginManager, login_user, logout_user, current_user,
 from wtforms import Form, RadioField, BooleanField, TextField, FloatField, PasswordField, validators, IntegerField, SelectField
 
 from model import *
+import redis 
 import config
+
+r = redis.Redis()
 
 login_manager = LoginManager()
 login_manager.login_view = "auth_user"
@@ -223,6 +226,8 @@ def final(key):
         # TODO update session to say completed.
         fin = Session.get_session(key)
         fin.close() 
+	# add machine into local redis database for pending
+	r.sadd('machines',key.name)
         return 'finished'
         
 @app.route('/blah')
