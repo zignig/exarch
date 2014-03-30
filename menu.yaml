@@ -1,0 +1,13 @@
+dev:
+  - master
+  - server1
+  - server2
+  - server3
+staging:
+  - master
+  - services
+production:
+  - master
+  - bootserver
+  - refector
+  - vpn

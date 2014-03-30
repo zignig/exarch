@@ -10,6 +10,8 @@ from model import *
 import redis 
 import config
 
+pxe_menu = yaml.load(open(config.menu))
+
 r = redis.Redis()
 
 login_manager = LoginManager()
@@ -229,18 +231,24 @@ def final(key):
 	# add machine into local redis database for pending
         r.sadd('machines',fin.name)
         return 'finished'
+
+
+@app.route('/menu/')
+@app.route('/menu/<first>')
+@app.route('/menu/<first>/<second>')
+@app.route('/menu/<first>/<second>/<third>')
+def selector(first='',second='',third=''):
+    if first == '' and second == '' and third== '':
+        # first level
+        return str(pxe_menu.keys())
+    if second == '' and third== '':        
+        return str(pxe_menu[first])
+    return str((first,second,third))
         
 @app.route('/blah')
 @returns_text
 def blah():
-    #return str(User.query.all())
-    txt = ''
-    for i in dir(request):
-        try:
-            txt = txt + str(i) + ' : ' + str(request.__dict__[i])+'\r\n'
-        except:
-            txt = txt + 'fail on '+str(i)+'\r\n'
-    return txt
+    return yaml.dump(pxe_menu)
 
 if __name__ == "__main__":
     init_db()
