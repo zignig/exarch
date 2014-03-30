@@ -24,14 +24,7 @@
     </ol>
 </ol>
 <h1>How to start</h1>
-    <div class="hero-cta">
-        <p>
-            <a class="button-cta button-info pure-button" href="{{ url_for('iso') }}">Get Boot Iso</a>
-            <br><small>Login Required</small>
-            <br><small>Bribe your system administrator if pain persists.</small>
-        </p>
-    </div>
-
+        {% include('login_button.html') %} 
 <ol>
 <li>Burn it onto a disc and boot a real or virtual machine from it</li>
 <li>Some computer boot stuff should scroll past and get you to a menu that looks like this</li>
@@ -39,9 +32,12 @@
     <div class="ipxe">
         <div class="menutop">Available Servers</div>
         <ul>
+             <li class="ipxe selected">exarch - master of masters bootserver</li>
+             <li class="ipxe">sydic-master - syndicated master bootserver</li>
             <li class="ipxe">master - master salt server</li>
-            <li class="ipxe selected">minion - bound minion to this salt master</li>
+            <li class="ipxe">minion - bound minion to this salt master</li>
             <li class="ipxe">widget - a server that makes widgets</li>
+            <li class="ipxe">etc ...</li>
         </ul>
     </div>
 </li>
@@ -53,7 +49,7 @@
 <li>Watch your new salt master deploy, should take an hour or so</li>
 </ol>
 <h1>What's going on</h1>
-<ol>
+<ol class="numbered">
 <li>iPXE is a really low level micro operating system that provides network and http access to get a web page from this bootserver</li>
 <li>Grabs the selected menu item and inserts it into database along with a random key , this key is used for the rest of the install</li>
 <li>Downloads a kernel and an initrd and boots into the debian installer</li>

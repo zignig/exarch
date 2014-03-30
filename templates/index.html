@@ -8,9 +8,7 @@
     </div>
     <div class="hero-cta">
         <p>
-            <a class="button-cta button-info pure-button" href="{{ url_for('iso') }}">Get Boot Iso</a>
-            <br><small>Login Required</small>
-            <br><small>Talk to your system administrator if pain persists.</small>
+        {% include('login_button.html') %}  
         </p>
     </div>
 </div>
