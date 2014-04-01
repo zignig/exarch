@@ -1,0 +1,13 @@
+#201405042100
+
+Short Term
+- Sort out access control
+- Admin page that works
+- Moar documentation
+- Python requirements file 
+
+Long Term
+- deeper salt integration
+- generate custom boot isos
+- fetch and cache boot media
+- 

@@ -1,0 +1,40 @@
+# 201405042102
+# Simon Kirkby
+# tigger@interthingy.com
+
+This is exarch a recursive boot server.
+
+It has been through about 5 complete rewrites over the last 5 or 6 years but now it can boot itself...
+
+The basic sequence:
+
+1. download the iso and boot
+2. grab a login/menu over http from exarch 
+3. get a kernel boot line
+4. get a initrd.gz and kernel file
+5. boot into debian
+6. grab a preseed file from exarch
+7. install debain
+8. add a post install script
+9. reboot ...
+10. run post install script
+11. installs saltstack as a master and runs highstate
+12. adds all the needed components ( apache , python, flask, compiler, etc )
+13. checks out exarch and the ipxe source code
+14. installs this application
+15. compiles a new iso for this machine
+16. reboots ...
+
+Now you are back at step one with new server.
+
+This is an alpha/developer release
+
+It will update /srv/(salt|reactor|pillar) every three hours and run high state on itself.
+
+Mini salt repo
+
+https://github.com/zignig/mini_master.git
+
+This we application
+
+https://github.com/zignig/exarch.git
