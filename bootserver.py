@@ -160,7 +160,7 @@ def logout():
     return redirect(url_for("hello"))
 
 @app.route("/iso")
-@login_required
+#@login_required
 def iso():
     # hand back the boot iso 
     return send_file('static/images/boot.iso',as_attachment=True,attachment_filename="boot.iso",mimetype='application/iso-image')
@@ -240,10 +240,15 @@ def final(key):
 def selector(first='',second='',third=''):
     if first == '' and second == '' and third== '':
         # first level
-        return str(pxe_menu.keys())
-    if second == '' and third== '':        
-        return str(pxe_menu[first])
-    return str((first,second,third))
+        return render_template('layered_menu.txt',items=pxe_menu.keys())
+    if second == '' and third== '' and (first in pxe_menu):        
+        return render_template('layered_menu.txt',items=pxe_menu[first],first=first)
+    if third== '' and (first in pxe_menu):
+        if type(pxe_menu[first]) == type({}):        
+            return render_template('layered_menu.txt',first=pxe_menu[first],second=pxe_menu[first][second])
+        if type(pxe_menu[first]) == type([]):
+            return 'it is a list'            
+    return str(pxe_menu.keys())
         
 @app.route('/blah')
 @returns_text

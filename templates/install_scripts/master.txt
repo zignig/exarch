@@ -3,6 +3,7 @@ apt-get install -y salt-master salt-minion
 
 # TODO grab salt master repo
 cd /srv/
+echo 'fetching {{ details.salt_repo }}'
 git clone {{ details.salt_repo }} .
 
 cat > /etc/salt/minion <<EOF
@@ -10,11 +11,11 @@ master: localhost
 id: master
 EOF
 
-# restart salt
+echo restart salt
 /etc/init.d/salt-minion stop
 /etc/init.d/salt-minion start
 sleep 20
-# run salt on self
+echo run salt on myself
 salt-key -ya master
 sleep 5
 salt master test.ping

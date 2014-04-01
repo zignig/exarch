@@ -1,3 +1,5 @@
             <a class="button-cta button-info pure-button" href="{{ url_for('iso') }}">Get Boot Iso</a>
+            {% if locked %}
             <br><small>Login Required</small>
             <br><small>Bribe to your system administrator with food if pain persists.</small>
+            {% endif %}

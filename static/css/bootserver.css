@@ -9,6 +9,20 @@
     font-size: 150%;
 }
 
+.orderofthings{
+     font-size: 150%;  
+    text-align: left;
+    list-style-type: lower-greek;
+}
+ .biglist{
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.orderofthings:hover{  
+    background: #1f8dd6;
+}
+
 .dim {
     color: rgb(50,200,50);
 }
@@ -18,10 +32,10 @@
 }
 
 aside {
-background: #1f8dd6;
-padding: 0.3em 1em;
-border-radius: 3px;
-color: #fff;
+    background: #1f8dd6;
+    padding: 0.3em 1em;
+    border-radius: 3px;
+    color: #fff;
 }
 
 .ipxe { 

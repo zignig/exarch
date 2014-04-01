@@ -1,0 +1,9 @@
+
+{{ path }}
+<ul>
+{% for i in items %}
+<li>
+<a href="{{ url_for('selector',first=i) }}"> {{ i }}</a>
+</li>
+{% endfor %}
+</ul>
