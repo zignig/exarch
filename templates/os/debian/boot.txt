@@ -1,0 +1,5 @@
+#!ipxe 
+
+kernel {{ url_for("kernel",_external=True,key=key)}} auto=true priority=critical url={{ url_for("preseed",_external=True,key=key) }}
+initrd {{ url_for("initrd",_external=True,key=key)}}
+boot
