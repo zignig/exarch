@@ -52,6 +52,7 @@ class Session(Base):
     status = Column(Enum('init','boot','install','configure','finish',name='status'))
     name = Column(String(50))
     processor = Column(String(20))
+    platform = Column(String(20))
 
     def __init__(self):
         self.start_time = datetime.datetime.now()
