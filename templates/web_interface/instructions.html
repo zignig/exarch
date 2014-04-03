@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "web_interface/layout.html" %}
 {% block title %}Bootserver{% endblock %}
 {% block body %}
 <div class="hero">
@@ -8,7 +8,7 @@
 <hr>
 <div class="chunky">
 <h1>Huh?</h1>
-{% include("about.html") %}
+{% include("web_interface/about.html") %}
 <h1>What you need</h1>
 <legend>A computer is probably a good start. But and empty computer is better.</legend>
 <ol>
@@ -24,7 +24,7 @@
     </ol>
 </ol>
 <h1>How to start</h1>
-        {% include('login_button.html') %} 
+        {% include('web_interface/login_button.html') %} 
 <ol>
 <li>Burn it onto a disc and boot a real or virtual machine from it</li>
 <li>Some computer boot stuff should scroll past and get you to a menu that looks like this</li>
