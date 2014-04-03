@@ -11,7 +11,7 @@ import redis
 import config
 
 pxe_menu = yaml.load(open(config.menu))
-
+distros = yaml.load(open('config/image_urls.txt'))
 r = redis.Redis()
 
 login_manager = LoginManager()
@@ -23,6 +23,7 @@ app.debug = True
 login_manager.init_app(app)
 app.secret_key = "asdf;lkasdflksgal88"
 
+# Some forms 
 
 class LoginForm(Form):
     username = TextField('username')
@@ -33,7 +34,9 @@ class AdminForm(Form):
     login = BooleanField('login')
     salt_stack = BooleanField('saltstack')
     salt_master = TextField('saltmaster')
-    
+
+# Login manager parts
+
 @login_manager.user_loader
 def load_user(userid):
     uid = int(userid)
@@ -63,6 +66,8 @@ def valid_user(user,passwd):
         # check password 
         return True
 
+# Authentication login
+
 @app.route('/auth', methods=["GET", "POST"])
 def auth_user():
     form = LoginForm(request.form)
@@ -76,7 +81,9 @@ def auth_user():
             flash("Logged in successfully.")
             print "login worked"
             return redirect(request.args.get("next") or url_for("index"))
-    return render_template('web_login.html')
+    return render_template('web_interface/web_login.html')
+
+# root page with agent switch 
     
 @app.route("/")
 def hello():
@@ -85,18 +92,15 @@ def hello():
         return redirect(url_for('ipxe'))
     else:
         machines = Machine.query.all()
-        return render_template('index.html',machines=machines)
+        return render_template('web_interface/index.html',machines=machines)
 
 @app.route("/installs")
 #@login_required
 def installs():
     sess = Session.query.all()
-    return render_template('installs.html',sess=sess)
+    return render_template('web_interface/installs.html',sess=sess)
 
-@app.route("/ipxe")
-@returns_text
-def ipxe():
-    return render_template('login.txt')
+
     
 @app.route("/login")
 @returns_text
@@ -111,11 +115,16 @@ def login():
             db_session.add(sess)
             db_session.commit()
             machines = Machine.query.all()
-            return render_template('menu.txt',machines=machines,key=sess.key)
+            return render_template('ipxe/menu.txt',machines=machines,key=sess.key)
         else:
             return render_template('login.txt')
             
 
+@app.route("/ipxe")
+@returns_text
+def ipxe():
+    return render_template('login.txt')
+    
 @app.route("/mac/<processor>/<mac_address>")
 @returns_text
 def mac(processor='',mac_address=''):
@@ -126,7 +135,7 @@ def mac(processor='',mac_address=''):
         db_session.add(sess)
         db_session.commit()
         machines = Machine.query.all()
-        return render_template('menu.txt',machines=machines,key=sess.key)
+        return render_template('ipxe/menu.txt',machines=machines,key=sess.key)
     return ''
     
 @app.route("/boot/<key>/<mtype>")
@@ -137,20 +146,21 @@ def boot(key,mtype):
         s = Session.get_session(key)
         s.name = mtype
         db_session.add(s)
-        db_session.commit()        
-        return render_template('boot.txt',key=key)
+        db_session.commit()    
+        # TODO select plaform
+        return render_template('os/debian/boot.txt',key=key)
     else:
-        return render_template('login.txt')      
+        return render_template('ipxe/login.txt')      
 
 @app.route('/instructions')
 def instructions():
-    return render_template('instructions.html')
+    return render_template('web_interface/instructions.html')
 
 @app.route('/admin',methods=["GET", "POST"])
 @login_required
 def admin():
     form = AdminForm(request.form)
-    return render_template('admin.html',form=form)
+    return render_template('web_interface/admin.html',form=form)
 
 @app.route("/logout")
 @login_required
@@ -178,6 +188,7 @@ def kernel(key):
 @app.route("/initrd/<key>")
 def initrd(key):
     if Session.valid_key(key):
+        # TODO , select the image from platform config
         k = Session.get_session(key)
         return send_file(
             'static/images/'+k.processor+'/initrd.gz',
@@ -190,11 +201,11 @@ def initrd(key):
 def preseed(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
-        # TODO put proxy into config
         if config.has_proxy:
             proxy = config.proxy
         else:
             proxy = None
+        # TODO select platform
         return render_template('debian.prsd.txt',details=config,name=k.name,deb_proxy=proxy,key=key,password=k.processor) 
 
 @app.route("/postinstall/<key>")
@@ -202,6 +213,7 @@ def preseed(key):
 def postinstall(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
+        # TODO select platform
         return render_template('postinstall.txt',key=k)
 
 @app.route("/firstboot/<key>")
@@ -209,7 +221,7 @@ def postinstall(key):
 def firstboot(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
-        # TODO add script layout to machines
+        # TODO add script layout to machines and break into platforms
         scripts = ['saltstack',str(k.name)]
         rendered_script = ''
         for i in scripts:
@@ -228,32 +240,34 @@ def final(key):
         # TODO update session to say completed.
         fin = Session.get_session(key)
         fin.close() 
-	# add machine into local redis database for pending
+        # add machine into local redis database for pending
+        # thatch suggests this is not the way to do it
+        # salt-virt has better magic key handling
         r.sadd('machines',fin.name)
         return 'finished'
-
 
 @app.route('/menu/')
 @app.route('/menu/<first>')
 @app.route('/menu/<first>/<second>')
 @app.route('/menu/<first>/<second>/<third>')
 def selector(first='',second='',third=''):
+    data = distros
     if first == '' and second == '' and third== '':
         # first level
-        return render_template('layered_menu.txt',items=pxe_menu.keys())
+        return render_template('ipxe/layered_menu.txt',items=data.keys())
     if second == '' and third== '' and (first in pxe_menu):        
-        return render_template('layered_menu.txt',items=pxe_menu[first],first=first)
-    if third== '' and (first in pxe_menu):
-        if type(pxe_menu[first]) == type({}):        
-            return render_template('layered_menu.txt',first=pxe_menu[first],second=pxe_menu[first][second])
-        if type(pxe_menu[first]) == type([]):
+        return render_template('ipxe/layered_menu.txt',items=data[first],first=first)
+    if third== '' and (first in data):
+        if type(data[first]) == type({}):        
+            return render_template('ipxe/layered_menu.txt',first=data[first],second=data[first][second])
+        if type(data[first]) == type([]):
             return 'it is a list'            
-    return str(pxe_menu.keys())
+    return str(data.keys())
         
 @app.route('/blah')
 @returns_text
 def blah():
-    return yaml.dump(pxe_menu)
+    return yaml.dump(distros)
 
 if __name__ == "__main__":
     init_db()
