@@ -258,9 +258,9 @@ def selector(first='',second='',third=''):
     if second == '' and third== '' and (first in pxe_menu):        
         return render_template('ipxe/layered_menu.txt',items=data[first],first=first)
     if third== '' and (first in data):
-        if type(pxe_menu[first]) == type({}):        
+        if type(data[first]) == type({}):        
             return render_template('ipxe/layered_menu.txt',first=data[first],second=data[first][second])
-        if type(pxe_menu[first]) == type([]):
+        if type(data[first]) == type([]):
             return 'it is a list'            
     return str(data.keys())
         
