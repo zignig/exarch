@@ -11,7 +11,7 @@ import redis
 import config
 
 pxe_menu = yaml.load(open(config.menu))
-
+distros = yaml.load(open('config/image_urls.txt'))
 r = redis.Redis()
 
 login_manager = LoginManager()
@@ -251,22 +251,23 @@ def final(key):
 @app.route('/menu/<first>/<second>')
 @app.route('/menu/<first>/<second>/<third>')
 def selector(first='',second='',third=''):
+    data = distros
     if first == '' and second == '' and third== '':
         # first level
-        return render_template('layered_menu.txt',items=pxe_menu.keys())
+        return render_template('ipxe/layered_menu.txt',items=data.keys())
     if second == '' and third== '' and (first in pxe_menu):        
-        return render_template('layered_menu.txt',items=pxe_menu[first],first=first)
-    if third== '' and (first in pxe_menu):
+        return render_template('ipxe/layered_menu.txt',items=data[first],first=first)
+    if third== '' and (first in data):
         if type(pxe_menu[first]) == type({}):        
-            return render_template('layered_menu.txt',first=pxe_menu[first],second=pxe_menu[first][second])
+            return render_template('ipxe/layered_menu.txt',first=data[first],second=data[first][second])
         if type(pxe_menu[first]) == type([]):
             return 'it is a list'            
-    return str(pxe_menu.keys())
+    return str(data.keys())
         
 @app.route('/blah')
 @returns_text
 def blah():
-    return yaml.dump(pxe_menu)
+    return yaml.dump(distros)
 
 if __name__ == "__main__":
     init_db()
