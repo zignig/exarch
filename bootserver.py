@@ -94,64 +94,17 @@ def hello():
         machines = Machine.query.all()
         return render_template('web_interface/index.html',machines=machines)
 
+
+    
+
+# webb application calls 
+
 @app.route("/installs")
 #@login_required
 def installs():
     sess = Session.query.all()
     return render_template('web_interface/installs.html',sess=sess)
-
-
     
-@app.route("/login")
-@returns_text
-def login():
-    if request.method == "GET":
-        user = request.args.get("user")
-        password = request.args.get("password")
-        processor = request.args.get("processor")
-        if valid_user(user,password):
-            sess = Session()
-            sess.processor = processor 
-            db_session.add(sess)
-            db_session.commit()
-            machines = Machine.query.all()
-            return render_template('ipxe/menu.txt',machines=machines,key=sess.key)
-        else:
-            return render_template('login.txt')
-            
-
-@app.route("/ipxe")
-@returns_text
-def ipxe():
-    return render_template('login.txt')
-    
-@app.route("/mac/<processor>/<mac_address>")
-@returns_text
-def mac(processor='',mac_address=''):
-    if request.method == "GET":
-        sess = Session()
-        sess.macaddress = mac_address
-        sess.processor = processor
-        db_session.add(sess)
-        db_session.commit()
-        machines = Machine.query.all()
-        return render_template('ipxe/menu.txt',machines=machines,key=sess.key)
-    return ''
-    
-@app.route("/boot/<key>/<mtype>")
-@returns_text
-def boot(key,mtype):
-    if Session.valid_key(key):
-        # add the machine type into the session
-        s = Session.get_session(key)
-        s.name = mtype
-        db_session.add(s)
-        db_session.commit()    
-        # TODO select plaform
-        return render_template('os/debian/boot.txt',key=key)
-    else:
-        return render_template('ipxe/login.txt')      
-
 @app.route('/instructions')
 def instructions():
     return render_template('web_interface/instructions.html')
@@ -174,13 +127,69 @@ def logout():
 def iso():
     # hand back the boot iso 
     return send_file('static/images/boot.iso',as_attachment=True,attachment_filename="boot.iso",mimetype='application/iso-image')
+
+# iPXE and session calls 
+
+@app.route("/login")
+@returns_text
+def login():
+    if request.method == "GET":
+        user = request.args.get("user")
+        password = request.args.get("password")
+        processor = request.args.get("processor")
+        if valid_user(user,password):
+            sess = Session()
+            sess.processor = processor 
+            db_session.add(sess)
+            db_session.commit()
+            machines = Machine.query.all()
+            return render_template('ipxe/menu.txt',machines=machines,key=sess.key)
+        else:
+            return render_template('ipxe/login.txt')
+                        
+@app.route("/ipxe")
+@returns_text
+def ipxe():
+    return render_template('ipxe/login.txt')
     
+@app.route("/mac/<processor>/<mac_address>")
+@returns_text
+def mac(processor='',mac_address=''):
+    if request.method == "GET":
+        sess = Session()
+        sess.macaddress = mac_address
+        sess.processor = processor
+        db_session.add(sess)
+        db_session.commit()
+        machines = Machine.query.all()
+        return render_template('ipxe/menu.txt',machines=machines,key=sess.key)
+    return ''
+    
+@app.route("/boot/<key>/<mtype>")
+@returns_text
+def boot(key,mtype):
+    if Session.valid_key(key):
+        # add the machine type into the session
+        m = Machine.query.filter(Machine.name == mtype).one()
+        if m == None:
+            return render_template('ipxe/login.txt')
+        k = Session.get_session(key)
+        k.name = mtype
+        k.platform = m.platform
+        db_session.add(k)
+        db_session.commit()    
+        # TODO select plaform
+        return render_template('os/'+k.platform+'/boot.txt',key=key)
+    else:
+        return render_template('ipxe/login.txt')  
+        
 @app.route("/kernel/<key>")
 def kernel(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
+        path = 'static/images/'+k.platform+'/'+k.processor+'/'+distros[k.platform][k.processor]['boot']
         return send_file(
-            'static/images/'+k.processor+'/linux',
+            path,
             as_attachment=True,
             attachment_filename='linux'
             )
@@ -190,8 +199,9 @@ def initrd(key):
     if Session.valid_key(key):
         # TODO , select the image from platform config
         k = Session.get_session(key)
+        path = 'static/images/'+k.platform+'/'+k.processor+'/'+distros[k.platform][k.processor]['fs']
         return send_file(
-            'static/images/'+k.processor+'/initrd.gz',
+            path,
             as_attachment=True,
             attachment_filename='initrd.gz'
             )
@@ -206,7 +216,8 @@ def preseed(key):
         else:
             proxy = None
         # TODO select platform
-        return render_template('debian.prsd.txt',details=config,name=k.name,deb_proxy=proxy,key=key,password=k.processor) 
+        # hands back a platform specific text file
+        return render_template('os/'+k.platform+'/'+'preseed.txt',details=config,name=k.name,deb_proxy=proxy,key=key) 
 
 @app.route("/postinstall/<key>")
 @returns_text

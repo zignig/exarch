@@ -1,2 +1,3 @@
 *.pyc
 *.spyder*
+static/images/*

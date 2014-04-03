@@ -7,14 +7,14 @@
     </div>
     <div class="hero-cta">
 {% if sess %}
-{% set blah = ['name','processor','start_time','end_time','macaddress'] %}
+{% set headings = ['name','platform','processor','start_time','end_time','macaddress'] %}
 <table class="pure-table">
     <thead>
         <tr>
      {% if current_user.is_authenticated() %}
         <th>Edit</th>
     {% endif %}
-        {% for i in blah %}
+        {% for i in headings %}
             <th>{{ i }}</th>
         {% endfor %}
         </tr>
@@ -24,7 +24,7 @@
      {% if current_user.is_authenticated() %}
         <td><button class="pure-button" >Edit</buttom></td>
     {% endif %}
-        {% for j in blah %}
+        {% for j in headings %}
             <td>{{ i[j] }}</td>
         {% endfor %}
     </tr>
