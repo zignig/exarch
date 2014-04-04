@@ -7,6 +7,8 @@ debian:
   amd64:
     kernel: http://ftp.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/linux
     initrd: http://ftp.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
+    boot: linux
+    fs: initrd.gz
 arch:
   i386:
     kernel: http://archlinux.mirror.uber.com.au/iso/archboot/2013.10/boot/vmlinuz_i686
