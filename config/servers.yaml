@@ -1,15 +1,10 @@
-exarch:
-  'Master of Masters'
-master:
-  'salt master server for deploying services'
-slave:
-  'slave server secondary services'
-studio:
-  'studio server box'
-render:
-  'render node'
-fileserver:
-  'replicated file server for hosting'
-desktop:
-  'Ubuntu desktop machine'
+debian:
+  os: debian
+  description: debian install
+arch:
+  os: arch
+  description: arch install
+ubuntu:
+  os: ubuntu
+  description: ubuntu install
 

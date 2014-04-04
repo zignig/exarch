@@ -21,11 +21,11 @@ def rand_string(length=16):
 def default_fill():
     # fill in some default data on database creation
     print 'fill in default data'
-    f = open('/opt/bootserver/servers.yaml')
+    f = open('/opt/bootserver/config/servers.yaml')
     servers = yaml.load(f)
     f.close()
     for i in servers:
-        t = Machine(i,servers[i])
+        t = Machine(i,servers[i]['os'],servers[i]['description'])
         db_session.add(t)
     db_session.commit()
     return
@@ -102,8 +102,9 @@ class Machine(Base):
     description = Column(String(50),unique=True)
     platform = Column(String(50))
     
-    def __init__(self,name,description):
+    def __init__(self,name,platform,description):
         self.name = name
+        self.platform = platform
         self.description = description
     
     def __repr__(self):

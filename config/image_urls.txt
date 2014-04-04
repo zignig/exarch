@@ -1,17 +1,28 @@
 debian:
   i386:
     kernel: http://ftp.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/linux
-    initrd: http://ftp.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/initrd.gz
+    initrd: http://ftp.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/initrd.gz 
+    boot: linux
+    fs: initrd.gz
   amd64:
     kernel: http://ftp.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/linux
     initrd: http://ftp.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
 arch:
-  i686:
+  i386:
     kernel: http://archlinux.mirror.uber.com.au/iso/archboot/2013.10/boot/vmlinuz_i686
     initrd: http://archlinux.mirror.uber.com.au/iso/archboot/2013.10/boot/initramfs_i686.img
-  x86_64:
+    boot: vmlinuz_i686
+    fs: initramfs_i686.img
+  amd64:
     kernel: http://archlinux.mirror.uber.com.au/iso/archboot/2013.10/boot/vmlinuz_x86_64
     initrd: http://archlinux.mirror.uber.com.au/iso/archboot/2013.10/boot/initramfs_x86_64.img
+    boot: vmlinuz_x86_64
+    fs: initramfs_x86_64.img
 ubuntu:
+  i386:
+    kernel: http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-i386/current/images/netboot/ubuntu-installer/i386/linux
+    initrd: http://archive.ubuntu.com/ubuntu/dists/trusty/main/installer-i386/current/images/netboot/ubuntu-installer/i386/initrd.gz
+    boot: linux
+    fs: initrd.gz
 mint:
 otheros:
