@@ -55,16 +55,21 @@ def check_user(user,passwd):
     if u == None:
         return None
     else:
-        # check password 
-        return u
+        if u.check_password(passwd) == True:
+            return u
+        else:
+            return None
         
 def valid_user(user,passwd):
     u = User.query.filter(User.name == user).first()    
     if u == None:
         return False
     else:
-        # check password 
-        return True
+        if u.check_password(passwd) == True:
+            return True
+        else:
+            return False
+    return False
 
 # Authentication login
 
@@ -75,7 +80,7 @@ def auth_user():
         user = check_user(form.username.data,form.password.data)
         if user == None:
             flash("Username or Password incorrect")
-            return render_template('web_login.html')
+            return render_template('web_interface/web_login.html')
         else:
             login_user(user)
             flash("Logged in successfully.")

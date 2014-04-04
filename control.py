@@ -50,5 +50,14 @@ def get_media():
                 except:
                     print 'get file ' + str(data['initrd'])    
 
+def add_user(username,password):
+    u = User.query.filter(User.name == username).first()
+    if u != None:
+        print "User already exists"
+    else:
+        new_user = User(username,password)
+        db_session.add(new_user)
+        db_session.commit()
+        
 if __name__ == "__main__":
     get_media()
