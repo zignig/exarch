@@ -17,12 +17,18 @@
     <ul>
         <li><a href="{{ url_for('hello') }}">Home</a></li>
         <li><a href="{{ url_for('instructions') }}">Instructions</a></li>
-        <li><a href="{{ url_for('installs') }}">Installs</a></li>
-        <li><a href="{{ url_for('admin') }}">Admin</a></li>
+        <li>|</li>       
         {% if current_user.is_authenticated() %}
-        <li class="pure-menu-selected"><a href="{{ url_for('logout') }}" >Logout</a></li>
+        <li><a href="{{ url_for('installs') }}">Installs</a></li>
+        <li><a href="{{ url_for('admin') }}">Menu</a></li>
+        <li><a href="{{ url_for('admin') }}">Platforms</a></li>
+        {% else %}
+        <li><a href="{{ url_for('admin') }}">Admin</a></li>
         {% endif %}
     </ul>
+        <ul class="menu-right pure-menu-horizontal">
+        <li ><a href="{{ url_for('logout') }}" >Logout</a></li>
+        </ul>
 </div>
 {% block body %}content here{% endblock %}
 {% with messages = get_flashed_messages() %}

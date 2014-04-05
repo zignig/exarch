@@ -3,6 +3,10 @@
     text-align: center;
 }
 
+.menu-right {
+    float: right;
+}
+
 .button-info {
     background: rgb(0,200,30);
     color: white;

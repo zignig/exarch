@@ -230,7 +230,7 @@ def postinstall(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
         # TODO select platform
-        return render_template('postinstall.txt',key=k)
+        return render_template('os/'+k.platform+'/'+'postinstall.txt',key=k)
 
 @app.route("/firstboot/<key>")
 @returns_text
@@ -283,7 +283,7 @@ def selector(first='',second='',third=''):
 @app.route('/blah')
 @returns_text
 def blah():
-    return yaml.dump(distros)
+    return yaml.dump(distros,default_flow_style=False)
 
 if __name__ == "__main__":
     init_db()
