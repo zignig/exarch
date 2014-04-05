@@ -1,0 +1,21 @@
+{% extends "web_interface/layout.html" %}
+{% block title %}Platforms{% endblock %}
+{% block body %}
+<div class="hero">
+    <div class="hero-titles">
+        <h1 class="hero-site">Platforms</h1> 
+    </div>
+    <div class="hero-cta">
+<div class="pure-menu pure-menu-open ">
+<ul>
+{% if sess %}
+    {% for i in sess %}
+    <li><a href="#">{{ i }}</a>
+     {% if current_user.is_authenticated() %}
+    {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+</div>
+{% endblock %}

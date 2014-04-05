@@ -39,8 +39,8 @@ def init_db():
     Base.metadata.create_all(bind=engine)
     if Machine.query.count() == 0:
         default_fill()
-    if User.query.count() == 0:
-        u = User('','')
+    #if User.query.count() == 0:
+    #    u = User('','')
         
 class Session(Base):
     " session storage for machine installs"
@@ -81,12 +81,12 @@ class Session(Base):
         # check some basic mac address features
         if len(string.split(mac,':')) != 6:
             return False
-        
         k = Session.query.filter(Session.macaddress == mac,Session.active == 1).one()
         if k != None:
             return True
         else:
             return False
+            
     @staticmethod
     def get_session(val):
         k = Session.query.filter(Session.key == val).first()
@@ -96,6 +96,8 @@ class Images(Base):
     __tablename__ = 'images'
     id = Column(Integer, primary_key=True)
     name = Column(String(50),unique=True)
+    active = Column(Integer,default=0)
+    
         
 class Machine(Base):
     __tablename__ = 'machines'
@@ -113,8 +115,6 @@ class Machine(Base):
         txt = ' '+self.name+' : '+self.description
         return txt
     
-
-            
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)

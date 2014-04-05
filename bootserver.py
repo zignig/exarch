@@ -105,10 +105,22 @@ def hello():
 # webb application calls 
 
 @app.route("/installs")
-#@login_required
+@login_required
 def installs():
     sess = Session.query.all()
     return render_template('web_interface/installs.html',sess=sess)
+
+@app.route("/menu")
+@login_required
+def menu():
+    sess = Machine.query.all()
+    return render_template('web_interface/machines.html',sess=sess)
+
+@app.route("/platforms")
+@login_required
+def platforms():
+    sess = Machine.query.all()
+    return render_template('web_interface/platforms.html',sess=distros)
     
 @app.route('/instructions')
 def instructions():
@@ -128,7 +140,7 @@ def logout():
     return redirect(url_for("hello"))
 
 @app.route("/iso")
-#@login_required
+@login_required
 def iso():
     # hand back the boot iso 
     return send_file('static/images/boot.iso',as_attachment=True,attachment_filename="boot.iso",mimetype='application/iso-image')
@@ -262,10 +274,10 @@ def final(key):
         r.sadd('machines',fin.name)
         return 'finished'
 
-@app.route('/menu/')
-@app.route('/menu/<first>')
-@app.route('/menu/<first>/<second>')
-@app.route('/menu/<first>/<second>/<third>')
+@app.route('/ipxe/')
+@app.route('/ipxe/<first>')
+@app.route('/ipxe/<first>/<second>')
+@app.route('/ipxe/<first>/<second>/<third>')
 def selector(first='',second='',third=''):
     data = distros
     if first == '' and second == '' and third== '':

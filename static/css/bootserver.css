@@ -3,6 +3,12 @@
     text-align: center;
 }
 
+.menu-left {
+    margin-left : -150px;
+    width: 150px;    
+    position: fixed;
+
+}
 .menu-right {
     float: right;
 }
