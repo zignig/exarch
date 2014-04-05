@@ -6,6 +6,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime , Enum
 
 import string,random,datetime,yaml
+import hashlib,uuid
+
 import config
 engine = create_engine(config.sqlurl, convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
@@ -119,12 +121,25 @@ class User(Base):
     name = Column(String(50), unique=True)
     email = Column(String(120), unique=True)
     active = Column(Integer,default=1)
-    password = Column(String(120))
+    password = Column(String(40))
+    salt = Column(String(32))
     
-    def __init__(self, name=None, email=None):
+    def __init__(self, name=None, password=None):
         self.name = name
-        self.email = email
+        self.salt = uuid.uuid4().hex
+        self.password = hashlib.sha1(self.salt.encode() + password.encode()).hexdigest()
     
+    def check_password(self,password):
+        if password != '':
+            new_hash = hashlib.sha1(self.salt.encode() + password.encode()).hexdigest()
+            if new_hash == self.password:
+                return True
+            else:
+                return False
+        else:
+            return False
+        return False
+        
     def is_anonymous(self):
         return False
     

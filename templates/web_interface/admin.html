@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "web_interface/layout.html" %}
 {% block title %}Bootserver{% endblock %}
 {% block body %}
 <div class="hero">
@@ -6,7 +6,7 @@
         <h1 class="hero-site">Administration</h1>
     </div>
 Admin Form and links to machines and settings.
-{% from "_formhelper.html" import render_field %}
+{% from "web_interface/_formhelper.html" import render_field %}
 {% if form %}
 <form method="post" class="pure-form " method=post>
     {% for f in form %}
