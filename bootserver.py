@@ -99,9 +99,6 @@ def hello():
         machines = Machine.query.all()
         return render_template('web_interface/index.html',machines=machines)
 
-
-    
-
 # webb application calls 
 
 @app.route("/installs")
@@ -121,17 +118,21 @@ def installs(id=None,action=None):
     return render_template('web_interface/installs.html',sess=sess,id=id)
 
 @app.route("/machines")
+@app.route("/machines/<id>")
 @login_required
-def machines():
-    sess = Machine.query.all()
-    return render_template('web_interface/machines.html',sess=sess)
+def machines(id=None):
+    if id == None:
+        sess = Machine.query.all()
+    else:
+        sess = Machine.query.filter(Machine.id == id).one()
+    return render_template('web_interface/machines.html',sess=sess,id=id)
 
 @app.route("/platforms")
 @app.route("/platforms/<name>")
+@app.route("/platforms/<name>/<proc>")
 @login_required
-def platforms(name=None):
-    sess = Machine.query.all()
-    return render_template('web_interface/platforms.html',data=distros,name=name)
+def platforms(name=None,proc=None):
+    return render_template('web_interface/platforms.html',data=distros,name=name,proc=proc)
     
 @app.route('/instructions')
 def instructions():

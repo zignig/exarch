@@ -7,16 +7,22 @@
 {% if data %}
     {% for i in data %}
         {% if i == name %}
-            <li class="stacked selected"><a href="{{ url_for('platforms',name=i) }}">{{ i }}</a></li>
-        {% else %}
-            <li class="stacked"><a href="{{ url_for('platforms',name=i) }}">{{ i }}</a></li>    
-        {% endif %}
+        <li class="stacked"><a href="{{ url_for('platforms',name=i) }}">{{ i }}</a></li>
         <ul class="sub-menu">
             {% for j in data[i] %}
-            <li>{{ j }}</li>
+            <li><a href="{{ url_for('platforms',name=i,proc=j) }}">{{ j }}</a></li>
+            {% if proc %}
+                {% if j == proc %}
+                <ul class="sub-menu">
+                <li>kernel : {{ data[i][j]['kernel']}}</li>
+                <li>initrd : {{ data[i][j]['initrd']}}</li>
+                </ul>
+                {% endif %}
+            {% endif %}
             {% endfor %}
         </ul>
-        {% if current_user.is_authenticated() %}
+        {% else %}
+            <li class="stacked"><a href="{{ url_for('platforms',name=i) }}">{{ i }}</a></li>    
         {% endif %}
     {% endfor %}
 </ul>

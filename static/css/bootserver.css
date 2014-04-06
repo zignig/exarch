@@ -50,7 +50,7 @@ ul.sub-menu {
 }
 
 .dim {
-    color: rgb(50,200,50);
+    background: rgb(50,200,50);
 }
 
 .pending {

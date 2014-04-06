@@ -2,33 +2,39 @@
 {% block title %}Available Machines{% endblock %}
 {% set title="Machines" %}
 {% block body %}
-{% if sess %}
 {% set headings = ['name','description','platform'] %}
-<table class="pure-table">
-    <thead>
-        <tr>
-     {% if current_user.is_authenticated() %}
-        <th>Edit</th>
-    {% endif %}
-        {% for i in headings %}
-            <th>{{ i }}</th>
-        {% endfor %}
+{% if id == None %}
+    {% if sess %}
+    
+    <table class="pure-table">
+        <thead>
+            <tr>
+         {% if current_user.is_authenticated() %}
+            <th>Edit</th>
+        {% endif %}
+            {% for i in headings %}
+                <th>{{ i }}</th>
+            {% endfor %}
+            </tr>
+        </thead>
+        {% for i in sess %}
+        <tr class="hilight {% if i['active'] == 0%}dim{% else %}pending{% endif %}">
+         {% if current_user.is_authenticated() %}
+            <td><a href="{{ url_for('machines',id=i['id']) }}"><button class="pure-button">Edit</button></a></td>
+        {% endif %}
+            {% for j in headings %}
+                <td>{{ i[j] }}</td>
+            {% endfor %}
         </tr>
-    </thead>
-    {% for i in sess %}
-    <tr class="hilight {% if i['active'] == 0%}dim{% else %}pending{% endif %}">
-     {% if current_user.is_authenticated() %}
-        <td><button class="pure-button" >Edit</buttom></td>
-    {% endif %}
-        {% for j in headings %}
-            <td>{{ i[j] }}</td>
         {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
-    </div>
-
-{% else %}
-<h1> No Installed Machines </h1>
+    </table>
+        </div>
+    
+    {% else %}
+    <h1> No Machine Templates </h1>
+    {% endif %}
+{% else%}
+machine editor for {{ sess.id }}
 {% endif %}
+
 {% endblock %}
