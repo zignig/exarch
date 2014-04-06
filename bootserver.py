@@ -105,10 +105,20 @@ def hello():
 # webb application calls 
 
 @app.route("/installs")
+@app.route("/installs/<id>")
+@app.route("/installs/<id>/<action>")
 @login_required
-def installs():
-    sess = Session.query.all()
-    return render_template('web_interface/installs.html',sess=sess)
+def installs(id=None,action=None):
+    if action != None:
+        if action == "deactivate":
+            s = Session.query.filter(Session.id == id).one()
+            s.close()
+            flash(action+' on '+str(id))           
+    if id == None:
+        sess = Session.query.all()
+    else:
+        sess = Session.query.filter(Session.id == id).one()
+    return render_template('web_interface/installs.html',sess=sess,id=id)
 
 @app.route("/machines")
 @login_required
@@ -117,10 +127,11 @@ def machines():
     return render_template('web_interface/machines.html',sess=sess)
 
 @app.route("/platforms")
+@app.route("/platforms/<name>")
 @login_required
-def platforms():
+def platforms(name=None):
     sess = Machine.query.all()
-    return render_template('web_interface/platforms.html',sess=distros)
+    return render_template('web_interface/platforms.html',data=distros,name=name)
     
 @app.route('/instructions')
 def instructions():

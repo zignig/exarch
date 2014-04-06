@@ -63,10 +63,11 @@ class Session(Base):
         self.status = 'init'
     
     def close(self):
-        self.active = 0
-        self.end_time = datetime.datetime.now()
-        db_session.add(self)
-        db_session.commit()
+        if self.active == 1:
+            self.active = 0
+            self.end_time = datetime.datetime.now()
+            db_session.add(self)
+            db_session.commit()
         
     @staticmethod
     def valid_key(val):
