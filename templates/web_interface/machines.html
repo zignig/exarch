@@ -1,11 +1,7 @@
 {% extends "web_interface/layout.html" %}
 {% block title %}Available Machines{% endblock %}
+{% set title="Machines" %}
 {% block body %}
-<div class="hero">
-    <div class="hero-titles">
-        <h1 class="hero-site">Installs</h1> 
-    </div>
-    <div class="hero-cta">
 {% if sess %}
 {% set headings = ['name','description','platform'] %}
 <table class="pure-table">
@@ -31,7 +27,7 @@
     {% endfor %}
 </table>
     </div>
-</div>
+
 {% else %}
 <h1> No Installed Machines </h1>
 {% endif %}

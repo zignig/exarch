@@ -110,9 +110,9 @@ def installs():
     sess = Session.query.all()
     return render_template('web_interface/installs.html',sess=sess)
 
-@app.route("/menu")
+@app.route("/machines")
 @login_required
-def menu():
+def machines():
     sess = Machine.query.all()
     return render_template('web_interface/machines.html',sess=sess)
 

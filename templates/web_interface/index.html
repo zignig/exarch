@@ -1,16 +1,10 @@
 {% extends "web_interface/layout.html" %}
-{% block title %}Bootserver{% endblock %}
+{% set title="Bootserver" %}
 {% block body %}
-<div class="hero">
-    <div class="hero-titles">
-        <h1 class="hero-site">Exarch</h1> 
-        <h2 class="hero-tagline">recursive deployment infrastructure</h2> 
+    <div class="hero">
+    {% include('web_interface/login_button.html') %}  
     </div>
-    <div class="hero-cta">
-        <p>
-        {% include('web_interface/login_button.html') %}  
-        </p>
-    </div>
+    <hr>
     <div class="biglist">
     Boot from this iso and this web application it will:
     <ul>
@@ -26,5 +20,4 @@
     <li class="orderofthings">See first item</li>
     </ul>
     </div>
-</div>
 {% endblock %}

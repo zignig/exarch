@@ -1,11 +1,7 @@
 {% extends "web_interface/layout.html" %}
 {% block title %}Installed machines{% endblock %}
+{% set title="Installs" %}
 {% block body %}
-<div class="hero">
-    <div class="hero-titles">
-        <h1 class="hero-site">Installs</h1> 
-    </div>
-    <div class="hero-cta">
 {% if sess %}
 {% set headings = ['name','platform','processor','start_time','end_time','macaddress'] %}
 <table class="pure-table">
