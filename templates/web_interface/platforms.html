@@ -1,0 +1,31 @@
+{% extends "web_interface/layout.html" %}
+{% block title %}Platforms{% endblock %}
+{% set title="Platforms" %}
+{% block body %}
+<div class="stacked">
+<ul>
+{% if data %}
+    {% for i in data %}
+        {% if i == name %}
+        <li class="stacked"><a href="{{ url_for('platforms',name=i) }}">{{ i }}</a></li>
+        <ul class="sub-menu">
+            {% for j in data[i] %}
+            <li><a href="{{ url_for('platforms',name=i,proc=j) }}">{{ j }}</a></li>
+            {% if proc %}
+                {% if j == proc %}
+                <ul class="sub-menu">
+                <li>kernel : {{ data[i][j]['kernel']}}</li>
+                <li>initrd : {{ data[i][j]['initrd']}}</li>
+                </ul>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% else %}
+            <li class="stacked"><a href="{{ url_for('platforms',name=i) }}">{{ i }}</a></li>    
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+</div>
+{% endblock %}

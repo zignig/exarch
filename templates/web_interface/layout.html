@@ -4,26 +4,41 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="A layout example that shows off a responsive email layout.">
-    <title>{% block title %}Pure Test{% endblock %}</title>
+    <title>{% block title %}{{ title }}{% endblock %}</title>
 <link rel="stylesheet" href="{{ url_for('static',filename="css/pure-min.css") }}">
 <link rel="stylesheet" href="{{ url_for('static',filename="css/bootserver.css") }}">
 </head>
 <body>
 <div class="main">
-	{% block header %}{% endblock %}
-    <div class="content">
-
-<div class="pure-menu pure-menu-open pure-menu-horizontal">
-    <ul>
-        <li><a href="{{ url_for('hello') }}">Home</a></li>
-        <li><a href="{{ url_for('instructions') }}">Instructions</a></li>
-        <li><a href="{{ url_for('installs') }}">Installs</a></li>
-        <li><a href="{{ url_for('admin') }}">Admin</a></li>
-        {% if current_user.is_authenticated() %}
-        <li class="pure-menu-selected"><a href="{{ url_for('logout') }}" >Logout</a></li>
-        {% endif %}
-    </ul>
+<div class="content">
+    <div class="">
+    <div class="pure-menu pure-menu-open pure-menu-horizontal ">
+        <ul>
+            <li><a href="{{ url_for('hello') }}">Home</a></li>
+            <li><a href="{{ url_for('instructions') }}">Instructions</a></li>
+            {% if current_user.is_authenticated() %}
+            <li>|</li>
+            <li><a href="{{ url_for('installs') }}">Installs</a></li>
+            <li><a href="{{ url_for('machines') }}">Machines</a></li>
+            <li><a href="{{ url_for('platforms') }}">Platforms</a></li>               
+            {% endif %}
+        </ul><ul class="pure-menu menu-right">
+            <li ></li>
+            {% if current_user.is_authenticated() %}
+            <li ><a href="{{ url_for('logout') }}" >Logout</a></li>
+            {% else %}
+            <li><a href="{{ url_for('admin') }}">Login</a></li>
+            {% endif %}
+         </ul>
+    </div>
+    </div>
+<div class="hero">
+    <div class="hero-titles">
+        <h1 class="hero-site">{{ title }}</h1> 
+    </div>
+    <div class="hero-cta">{{ cta }}</div>
 </div>
+<hr>
 {% block body %}content here{% endblock %}
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -35,7 +50,6 @@
     </div>
   {% endif %}
 {% endwith %}
-
 </div>
 </div>
 </body>

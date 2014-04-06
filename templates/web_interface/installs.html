@@ -1,38 +1,48 @@
 {% extends "web_interface/layout.html" %}
 {% block title %}Installed machines{% endblock %}
+{% set title="Installs" %}
 {% block body %}
-<div class="hero">
-    <div class="hero-titles">
-        <h1 class="hero-site">Installs</h1> 
-    </div>
-    <div class="hero-cta">
-{% if sess %}
 {% set headings = ['name','platform','processor','start_time','end_time','macaddress'] %}
-<table class="pure-table">
-    <thead>
-        <tr>
-     {% if current_user.is_authenticated() %}
-        <th>Edit</th>
-    {% endif %}
-        {% for i in headings %}
-            <th>{{ i }}</th>
-        {% endfor %}
+{% if id == None %}
+    {% if sess %}
+    <table class="pure-table">
+        <thead>
+            <tr>
+         {% if current_user.is_authenticated() %}
+            <th>View</th>
+        {% endif %}
+            {% for i in headings %}
+                <th>{{ i }}</th>
+            {% endfor %}
+            </tr>
+        </thead>
+        {% for i in sess %}
+        <tr class="hilight {% if i['active'] == 0%}dim{% else %}pending{% endif %}">
+         {% if current_user.is_authenticated() %}
+            <td><a href="{{ url_for('installs',id=i['id']) }}"><button class="pure-button">View</button></a></td>
+        {% endif %}
+            {% for j in headings %}
+                <td>{{ i[j] }}</td>
+            {% endfor %}
         </tr>
-    </thead>
-    {% for i in sess %}
-    <tr class="hilight {% if i['active'] == 0%}dim{% else %}pending{% endif %}">
-     {% if current_user.is_authenticated() %}
-        <td><button class="pure-button" >Edit</buttom></td>
-    {% endif %}
-        {% for j in headings %}
-            <td>{{ i[j] }}</td>
         {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
+    </table >
+        </div>
     </div>
-</div>
+    {% else %}
+    <h1> No Installed Machines </h1>
+    {% endif %}
 {% else %}
-<h1> No Installed Machines </h1>
+    <table class="pure-table pure-table-bordered">
+    {% for j in sess.__table__.columns.keys() %}
+    <tr><td>{{ j }}</td><td>{{ sess[j] }}</td></tr>
+    {% endfor %}
+    <tr><td colspan=2>
+    {% if sess.active %}
+    <a href="{{ url_for('installs',id=sess.id,action='deactivate') }}"><button class="pure-button menu-right">Deactivate</button></a>
+    {% endif %}
+    <a href="{{ url_for('installs',id=sess.id,action='fnord') }}"><button class="pure-button">Fnord</button></a>    
+    </td></tr>
+    </table>
 {% endif %}
 {% endblock %}

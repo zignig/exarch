@@ -3,17 +3,43 @@
     text-align: center;
 }
 
+.stacked ul {
+    margin : 0px;
+    padding : 0px;
+}
+
+ul.sub-menu {
+    margin : 0px;
+    margin-left : 20px;    
+    padding : 0px;
+}
+
+.stacked li {
+    list-style-type: none;
+#    border: 1px solid;    
+    padding : 6px;
+}
+
+.stacked li:hover{
+    background: #1f8dd6;
+}
+
+.menu-right {
+    float: right;
+}
+
 .button-info {
     background: rgb(0,200,30);
     color: white;
     font-size: 150%;
 }
 
-.orderofthings{
-     font-size: 150%;  
+.orderofthings {
+    font-size: 150%;  
     text-align: left;
     list-style-type: lower-greek;
 }
+
  .biglist{
     width: 40%;
     margin-left: auto;
@@ -24,7 +50,7 @@
 }
 
 .dim {
-    color: rgb(50,200,50);
+    background: rgb(50,200,50);
 }
 
 .pending {

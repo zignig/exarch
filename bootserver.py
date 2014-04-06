@@ -99,16 +99,40 @@ def hello():
         machines = Machine.query.all()
         return render_template('web_interface/index.html',machines=machines)
 
-
-    
-
 # webb application calls 
 
 @app.route("/installs")
-#@login_required
-def installs():
-    sess = Session.query.all()
-    return render_template('web_interface/installs.html',sess=sess)
+@app.route("/installs/<id>")
+@app.route("/installs/<id>/<action>")
+@login_required
+def installs(id=None,action=None):
+    if action != None:
+        if action == "deactivate":
+            s = Session.query.filter(Session.id == id).one()
+            s.close()
+            flash(action+' on '+str(id))           
+    if id == None:
+        sess = Session.query.all()
+    else:
+        sess = Session.query.filter(Session.id == id).one()
+    return render_template('web_interface/installs.html',sess=sess,id=id)
+
+@app.route("/machines")
+@app.route("/machines/<id>")
+@login_required
+def machines(id=None):
+    if id == None:
+        sess = Machine.query.all()
+    else:
+        sess = Machine.query.filter(Machine.id == id).one()
+    return render_template('web_interface/machines.html',sess=sess,id=id)
+
+@app.route("/platforms")
+@app.route("/platforms/<name>")
+@app.route("/platforms/<name>/<proc>")
+@login_required
+def platforms(name=None,proc=None):
+    return render_template('web_interface/platforms.html',data=distros,name=name,proc=proc)
     
 @app.route('/instructions')
 def instructions():
@@ -128,7 +152,7 @@ def logout():
     return redirect(url_for("hello"))
 
 @app.route("/iso")
-#@login_required
+@login_required
 def iso():
     # hand back the boot iso 
     return send_file('static/images/boot.iso',as_attachment=True,attachment_filename="boot.iso",mimetype='application/iso-image')
@@ -230,7 +254,7 @@ def postinstall(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
         # TODO select platform
-        return render_template('postinstall.txt',key=k)
+        return render_template('os/'+k.platform+'/'+'postinstall.txt',key=k)
 
 @app.route("/firstboot/<key>")
 @returns_text
@@ -262,10 +286,10 @@ def final(key):
         r.sadd('machines',fin.name)
         return 'finished'
 
-@app.route('/menu/')
-@app.route('/menu/<first>')
-@app.route('/menu/<first>/<second>')
-@app.route('/menu/<first>/<second>/<third>')
+@app.route('/ipxe/')
+@app.route('/ipxe/<first>')
+@app.route('/ipxe/<first>/<second>')
+@app.route('/ipxe/<first>/<second>/<third>')
 def selector(first='',second='',third=''):
     data = distros
     if first == '' and second == '' and third== '':
@@ -283,7 +307,7 @@ def selector(first='',second='',third=''):
 @app.route('/blah')
 @returns_text
 def blah():
-    return yaml.dump(distros)
+    return yaml.dump(distros,default_flow_style=False)
 
 if __name__ == "__main__":
     init_db()
