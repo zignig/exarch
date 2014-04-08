@@ -1,0 +1,34 @@
+#!/bin/sh
+
+cat > /etc/issue <<EOF
+Installing, please hold ....
+System needs one more reboot to finish installing
+EOF
+
+# sleep for a while for the dns and networking to catch up 
+sleep 10
+
+# set hostname 
+cat > /etc/hostname <<EOF
+{{ key.name }}
+EOF
+
+{%- if script %}
+# do installer stuff here 
+{{ script }}
+{% endif -%}
+
+# clean up and reboot
+
+# set issue 
+cat > /etc/issue <<EOF
+ {{ key.name }} - salt stack managed. Debian 7
+EOF
+
+update-rc.d -f firstboot remove
+chmod a-x /root/firstboot
+
+# notify the bootserver that the install has finished 
+curl {{ url_for('final',_external=True,key=key.key) }}
+# reboot the server
+/sbin/reboot

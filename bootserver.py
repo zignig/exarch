@@ -226,7 +226,7 @@ def kernel(key):
 @app.route("/initrd/<key>")
 def initrd(key):
     if Session.valid_key(key):
-        # TODO , select the image from platform config
+        # DONE , select the image from platform config
         k = Session.get_session(key)
         path = 'static/images/'+k.platform+'/'+k.processor+'/'+distros[k.platform][k.processor]['fs']
         return send_file(
@@ -269,9 +269,9 @@ def firstboot(key):
             try:
                 rendered_script += render_template('install_scripts/'+i+'.txt',details=config,key=k)+'\n'
             except:
-                rendered_script += '\n# '+ i + ' has no template, please write and install\n\n'
+                rendered_script += '\n# '+ i + ' has broken template, please write and install\n\n'
             rendered_script += '# --------------------- end '+ i +' --------------------- #\n\n'
-        return render_template('firstboot.txt',script=rendered_script,key=k)
+        return render_template(['os/'+k.platform+'/'+'firstboot.txt','os/common/firstboot.txt'],script=rendered_script,key=k)
             
 @app.route("/final/<key>")
 @returns_text

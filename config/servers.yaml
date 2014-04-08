@@ -1,3 +1,6 @@
+exarch:
+  os: debian
+  description: Salt master master bootserver 
 debian:
   os: debian
   description: debian install
