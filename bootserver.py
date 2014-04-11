@@ -11,8 +11,8 @@ import redis
 import config
 
 pxe_menu = yaml.load(open(config.menu))
-distros = yaml.load(open('config/image_urls.txt'))
-r = redis.Redis()
+distros = yaml.load(open(config.images))
+#r = redis.Redis()
 
 login_manager = LoginManager()
 login_manager.login_view = "auth_user"
@@ -207,7 +207,6 @@ def boot(key,mtype):
         k.platform = m.platform
         db_session.add(k)
         db_session.commit()    
-        # TODO select plaform
         return render_template('os/'+k.platform+'/boot.txt',key=key)
     else:
         return render_template('ipxe/login.txt')  
@@ -226,7 +225,6 @@ def kernel(key):
 @app.route("/initrd/<key>")
 def initrd(key):
     if Session.valid_key(key):
-        # DONE , select the image from platform config
         k = Session.get_session(key)
         path = 'static/images/'+k.platform+'/'+k.processor+'/'+distros[k.platform][k.processor]['fs']
         return send_file(
@@ -244,7 +242,6 @@ def preseed(key):
             proxy = config.proxy
         else:
             proxy = None
-        # TODO select platform
         # hands back a platform specific text file
         return render_template('os/'+k.platform+'/'+'preseed.txt',details=config,name=k.name,deb_proxy=proxy,key=key) 
 
@@ -253,7 +250,6 @@ def preseed(key):
 def postinstall(key):
     if Session.valid_key(key):
         k = Session.get_session(key)
-        # TODO select platform
         return render_template('os/'+k.platform+'/'+'postinstall.txt',key=k)
 
 @app.route("/firstboot/<key>")

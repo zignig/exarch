@@ -99,7 +99,6 @@ class Images(Base):
     name = Column(String(50),unique=True)
     active = Column(Integer,default=0)
     
-        
 class Machine(Base):
     __tablename__ = 'machines'
     id = Column(Integer, primary_key=True)
